@@ -13,7 +13,7 @@ struct Login
 
 } ;
   
-int main ()
+int login ()
 {
     char email[100], password[100];
 
@@ -37,7 +37,9 @@ int main ()
         int result =strcmp(email, input.email);
         int result1 =strcmp(password, input.password);
         if(result== 0 && result1 ==0) {
+
             printf("Login successfull \n");
+            printf("Welcome %s", input.name);
         } else{
             printf("please register to login\n");
         }

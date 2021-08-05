@@ -10,7 +10,7 @@ struct Register
 
 } reg;
 
-int main()
+int Register()
 {
     char email[100], password1[100], password2[100], validate[100];
     char gmail[] = "@gmail.com";
