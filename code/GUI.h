@@ -1,4 +1,4 @@
-#include<windows.h>
+#include <windows.h>
 LRESULT CALLBACK WindowProcedure(HWND,UINT, WPARAM,LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args,int ncmdshow ){
