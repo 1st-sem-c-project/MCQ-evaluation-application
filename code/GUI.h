@@ -1,8 +1,4 @@
-#include<windows.h>
-#include<stdio.h>
-
-#define LOGIN_ACTIVATE 1
-
+#include <windows.h>
 LRESULT CALLBACK WindowProcedure(HWND,UINT, WPARAM,LPARAM);
 void Login_page(HWND);
 
