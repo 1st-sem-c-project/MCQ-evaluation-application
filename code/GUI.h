@@ -1,7 +1,7 @@
 #include<windows.h>
 #include<stdio.h>
 #include<windowsx.h>
-
+#include"question_store.h"
 
 #define LOGIN_ACTIVATE 1
 #define SIGNUP_ACTIVATE 2
@@ -45,11 +45,12 @@ struct userdata{
     int score;
     int admin;
 }user;
-struct Question{
-    char question[300];
-    char options[4][50];
-    char correct[50];
-}que;
+// struct Question{
+//     char question[300];
+//     char options[4][50];
+//     char correct[50];
+// }que;
+struct Question que;
 int confirmpass = 1;
 
 
@@ -165,6 +166,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd,UINT msg, WPARAM wp ,LPARAM lp){
                     que.option[3]   -->     fourth option
                     que.correct     -->     correct answer
                     */
+                    store_to_the_database(que);
                     //now structure is processed and saved in the data base
                     break;
 
@@ -195,6 +197,8 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd,UINT msg, WPARAM wp ,LPARAM lp){
                     }
                     printf("%s\n",answer);
                     //answer is the option choosen by the user this need to be checked 
+
+                    //now here the procssing is done for checking the answer and storing the status in the database
                     break;
             }
             break;
@@ -257,7 +261,7 @@ void Signup_page(HWND hWnd){//creates all the elements of the registration page
 }
 
 void options_page(HWND hWnd){//creates elements for the option page
-    user.admin = 0;
+    user.admin = 1;
     if(user.admin == 1){// checks if the loged in user is admin 
         statusPageButton= CreateWindowW(L"button",L"View Student status",WS_VISIBLE|WS_CHILD,150,125,200,50,hWnd,NULL,NULL,NULL);
         questionAnswerButton = CreateWindowW(L"button",L"Add Questions",WS_VISIBLE|WS_CHILD,150,250,200,50,hWnd,(HMENU)ADD_QUESTION_PAGE,NULL,NULL);//pressing this buttion will open the add quesition page for admin
@@ -281,6 +285,9 @@ void add_question_page(HWND hWnd){// this is the user interface for admin to add
 }
 
 void practice_question_page(HWND hWnd){
+
+    //retrieve the question here:
+
     // strcpy(que.question,"What is your name?");
     // strcpy(que.options[0],"Manish");
     // strcpy(que.options[1],"AAYUSH");
