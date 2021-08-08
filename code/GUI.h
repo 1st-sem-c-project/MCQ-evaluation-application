@@ -22,6 +22,7 @@ void destroy_login();
 void destroy_option();
 void add_question_page(HWND);
 void practice_question_page(HWND);
+void clear_text();
 
 
 HWND userName_label,userName,passWord_label,passWord,logiInButton,
@@ -168,6 +169,9 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd,UINT msg, WPARAM wp ,LPARAM lp){
                     */
                     store_to_the_database(que);
                     //now structure is processed and saved in the data base
+                    questionAddError = CreateWindowW(L"static",L"Question added sucessfully!!!",WS_VISIBLE|WS_CHILD|SS_CENTER,25,25,400,25,hWnd,NULL,NULL,NULL);
+                    //clear the text in the gui
+                    clear_text();
                     break;
 
 
@@ -306,4 +310,13 @@ void practice_question_page(HWND hWnd){
     thirdOption = CreateWindowW(L"button",option[2],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,50,200,150,25,hWnd,NULL,NULL,NULL);
     fourthOption = CreateWindowW(L"button",option[3],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,200,150,25,hWnd,NULL,NULL,NULL);
     nextQuestion = CreateWindowW(L"button",L"Next question",WS_VISIBLE|WS_CHILD|SS_CENTER,150,400,200,50,hWnd,(HMENU)SUBMIT_ANSWER,NULL,NULL);
+}
+
+void clear_text(){
+    SetWindowTextW(addQuestion,L"");
+    SetWindowTextW(firstOption,L"");
+    SetWindowTextW(secondOption,L"");
+    SetWindowTextW(thirdOption,L"");
+    SetWindowTextW(fourthOption,L"");
+    SetWindowTextW(correctAnswer,L"");
 }
