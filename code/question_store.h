@@ -5,7 +5,6 @@ struct Question{
     char correct[50];
 };
 
-struct Question qu;
 void store_to_the_database(struct Question question){
     FILE *ptr;
     ptr=fopen("resources/question.txt", "ab");
