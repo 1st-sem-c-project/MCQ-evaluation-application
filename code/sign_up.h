@@ -24,7 +24,7 @@ int registration(struct Register reg)
     FILE *user;
 
     // open file for writing
-    user = fopen("resources/user.txt", "ab");
+    user = fopen("resources/username_password.txt", "ab");
     if (user == NULL)
     {
         fprintf(stderr, "\nError opend file\n");
