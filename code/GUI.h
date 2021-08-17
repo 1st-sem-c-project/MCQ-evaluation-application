@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 #include <windows.h>
 #include <stdio.h>
 #include <windowsx.h>
 #include "question_store.h"
+=======
+#include<windows.h>
+#include<stdio.h>
+#include<windowsx.h>
+#include"question_answer_display.h"
+>>>>>>> abe6fc6e9eda2ee6b56d98a94b9d7e3d2611206b
 
 #define LOGIN_ACTIVATE 1
 #define SIGNUP_ACTIVATE 2
@@ -20,8 +27,9 @@ void options_page(HWND);
 void destroy_login();
 void destroy_option();
 void add_question_page(HWND);
-void practice_question_page(HWND);
+void practice_question_page(HWND,struct Question);
 void clear_text();
+void destroy_questions();
 
 HWND userName_label, userName, passWord_label, passWord, logiInButton,
     signUpButton, signUpTitle, firstName_label, firstName, lastName_label,
@@ -167,11 +175,56 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                     que.option[3]   -->     fourth option
                     que.correct     -->     correct answer
                     */
+<<<<<<< HEAD
             store_to_the_database(que);
             //now structure is processed and saved in the data base
             questionAddError = CreateWindowW(L"static", L"Question added sucessfully!!!", WS_VISIBLE | WS_CHILD | SS_CENTER, 25, 25, 400, 25, hWnd, NULL, NULL, NULL);
             //clear the text in the gui
             clear_text();
+=======
+                    store_to_the_database(que);
+                    //now structure is processed and saved in the data base
+                    questionAddError = CreateWindowW(L"static",L"Question added sucessfully!!!",WS_VISIBLE|WS_CHILD|SS_CENTER,25,25,400,25,hWnd,NULL,NULL,NULL);
+                    //clear the text in the gui
+                    clear_text();
+                    break;
+
+
+                case PRACTICE_QUESTION_BUTTON:;
+                    destroy_option();
+                    get_question(&que);
+
+                    //display the question here
+                    practice_question_page(hWnd,que);
+
+                    break;
+                case SUBMIT_ANSWER:;
+
+                    char answer[50];
+
+                    /*this if conditions check which option is checked*/
+                    if (Button_GetState(firstOption)==BST_CHECKED){
+                        GetWindowText(firstOption,answer,50); 
+                    }else if (Button_GetState(secondOption)==BST_CHECKED){
+                        GetWindowText(secondOption,answer,50); 
+                    }else if (Button_GetState(thirdOption)==BST_CHECKED){
+                        GetWindowText(thirdOption,answer,50); 
+                    }else if (Button_GetState(fourthOption)==BST_CHECKED){
+                        GetWindowText(fourthOption,answer,50);  
+                    }else{
+                        answerNotChecked = CreateWindowW(L"static",L"Nothing is selected",WS_VISIBLE|WS_CHILD|SS_CENTER,50,300,400,25,hWnd,NULL,NULL,NULL);
+                        break;
+                    }
+                    printf("%s\n",answer);
+                    //answer is the option choosen by the user this need to be checked 
+                    
+                    //now here the procssing is done for checking the answer and storing the status in the database
+                    get_question(&que);
+                    destroy_questions();
+                    practice_question_page(hWnd,que);
+                    break;
+            }
+>>>>>>> abe6fc6e9eda2ee6b56d98a94b9d7e3d2611206b
             break;
 
         case PRACTICE_QUESTION_BUTTON:;
@@ -271,6 +324,7 @@ void Signup_page(HWND hWnd)
     registerButton = CreateWindowW(L"button", L"Register", WS_VISIBLE | WS_CHILD, 200, 375, 100, 25, hWnd, (HMENU)REGISTER_USER_BUTTON, NULL, NULL);
 }
 
+<<<<<<< HEAD
 void options_page(HWND hWnd)
 { //creates elements for the option page
     user.admin = 1;
@@ -283,6 +337,16 @@ void options_page(HWND hWnd)
     { // checks if the loged in user is student
         statusPageButton = CreateWindowW(L"button", L"Your status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, NULL, NULL, NULL);
         questionAnswerButton = CreateWindowW(L"button", L"Practice Questions", WS_VISIBLE | WS_CHILD, 150, 250, 200, 50, hWnd, (HMENU)PRACTICE_QUESTION_BUTTON, NULL, NULL);
+=======
+void options_page(HWND hWnd){//creates elements for the option page
+    user.admin = 0;
+    if(user.admin == 1){// checks if the loged in user is admin 
+        statusPageButton= CreateWindowW(L"button",L"View Student status",WS_VISIBLE|WS_CHILD,150,125,200,50,hWnd,NULL,NULL,NULL);
+        questionAnswerButton = CreateWindowW(L"button",L"Add Questions",WS_VISIBLE|WS_CHILD,150,250,200,50,hWnd,(HMENU)ADD_QUESTION_PAGE,NULL,NULL);//pressing this buttion will open the add quesition page for admin
+    }else if(user.admin == 0){// checks if the loged in user is student
+        statusPageButton= CreateWindowW(L"button",L"Your status",WS_VISIBLE|WS_CHILD,150,125,200,50,hWnd,NULL,NULL,NULL);
+        questionAnswerButton = CreateWindowW(L"button",L"Practice Questions",WS_VISIBLE|WS_CHILD,150,250,200,50,hWnd,(HMENU)PRACTICE_QUESTION_BUTTON,NULL,NULL);
+>>>>>>> abe6fc6e9eda2ee6b56d98a94b9d7e3d2611206b
     }
 }
 
@@ -300,9 +364,14 @@ void add_question_page(HWND hWnd)
     addQuestionToDatabase = CreateWindowW(L"button", L"Add your question to database", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 400, 300, 25, hWnd, (HMENU)ADD_QUESTION_TO_DATABASE, NULL, NULL); // pressing this button will add the question to the database
 }
 
+<<<<<<< HEAD
 void practice_question_page(HWND hWnd)
 {
 
+=======
+void practice_question_page(HWND hWnd,struct Question que){
+    DestroyWindow(answerNotChecked);
+>>>>>>> abe6fc6e9eda2ee6b56d98a94b9d7e3d2611206b
     //retrieve the question here:
 
     // strcpy(que.question,"What is your name?");
@@ -312,6 +381,7 @@ void practice_question_page(HWND hWnd)
     // strcpy(que.options[3],"Niraj");
     wchar_t quest[300];
     wchar_t option[4][50];
+<<<<<<< HEAD
     mbstowcs(quest, que.question, 300);
     mbstowcs(option[0], que.options[0], 50);
     mbstowcs(option[1], que.options[1], 50);
@@ -333,4 +403,33 @@ void clear_text()
     SetWindowTextW(thirdOption, L"");
     SetWindowTextW(fourthOption, L"");
     SetWindowTextW(correctAnswer, L"");
+=======
+    mbstowcs(quest,que.question,300);
+    mbstowcs(option[0],que.options[0],50);
+    mbstowcs(option[1],que.options[1],50);
+    mbstowcs(option[2],que.options[2],50);
+    mbstowcs(option[3],que.options[3],50);
+    addQuestion = CreateWindowW(L"static",quest,WS_VISIBLE|WS_CHILD|SS_CENTER,50,100,400,25,hWnd,NULL,NULL,NULL);
+    firstOption = CreateWindowW(L"button",option[0],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,50,150,150,25,hWnd,NULL,NULL,NULL);
+    secondOption = CreateWindowW(L"button",option[1],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,150,150,25,hWnd,NULL,NULL,NULL);
+    thirdOption = CreateWindowW(L"button",option[2],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,50,200,150,25,hWnd,NULL,NULL,NULL);
+    fourthOption = CreateWindowW(L"button",option[3],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,200,150,25,hWnd,NULL,NULL,NULL);
+    nextQuestion = CreateWindowW(L"button",L"Next question",WS_VISIBLE|WS_CHILD|SS_CENTER,150,400,200,50,hWnd,(HMENU)SUBMIT_ANSWER,NULL,NULL);
+}
+void destroy_questions(){
+    DestroyWindow(addQuestion);
+    DestroyWindow(firstOption);
+    DestroyWindow(secondOption);
+    DestroyWindow(thirdOption);
+    DestroyWindow(fourthOption);
+    DestroyWindow(nextQuestion);
+}
+void clear_text(){
+    SetWindowTextW(addQuestion,L"");
+    SetWindowTextW(firstOption,L"");
+    SetWindowTextW(secondOption,L"");
+    SetWindowTextW(thirdOption,L"");
+    SetWindowTextW(fourthOption,L"");
+    SetWindowTextW(correctAnswer,L"");
+>>>>>>> abe6fc6e9eda2ee6b56d98a94b9d7e3d2611206b
 }
