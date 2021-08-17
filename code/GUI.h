@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args,int ncmdshow 
     /*Below code creates the window 
     SYNTAX:CreateWindowW(classname of the window, window name, type of the window, top_left postion x, y, size x, size y, NULL , NULL, NULL, NULL);
     */
-    CreateWindowW(L"MainWindow",L"MCQ Evaluation Application",(((WS_OVERLAPPEDWINDOW^WS_THICKFRAME)^WS_MAXIMIZEBOX)^WS_MINIMIZEBOX)|WS_VISIBLE,0,0,500,500,NULL,NULL,NULL,NULL);
+    CreateWindowW(L"MainWindow",L"MCQ Evaluation Application",((WS_OVERLAPPEDWINDOW^WS_THICKFRAME)^WS_MAXIMIZEBOX)|WS_VISIBLE,0,0,500,500,NULL,NULL,NULL,NULL);
     MSG msg = {0};
 
     //Message loop for running the window
