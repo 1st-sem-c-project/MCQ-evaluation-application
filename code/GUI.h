@@ -11,6 +11,7 @@
 #define ADD_QUESTION_TO_DATABASE 5
 #define PRACTICE_QUESTION_BUTTON 6
 #define SUBMIT_ANSWER 7
+#define SIGN_OUT 8
 
 
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
@@ -31,7 +32,7 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     registerButton, confirmPassIncorrect, statusPageButton, questionAnswerButton,
     addQuestionLabel, addQuestion, addOptionLabel, firstOption, secondOption, thirdOption,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
-    nextQuestion, answerNotChecked;
+    nextQuestion, answerNotChecked,logOutButton;
 
 struct Register user;
 struct Question que;
@@ -198,8 +199,20 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             }
             printf("%s\n", answer);
             //answer is the option choosen by the user this need to be checked
-
+            printf("%d",user.score);
+            if(strcmp(answer,que.correct)==0){
+                user.score++;
+            }
+            printf("%d",user.score);
             //now here the procssing is done for checking the answer and storing the status in the database
+            get_question(&que);
+            destroy_questions();
+            practice_question_page(hWnd,que);
+            break;
+        case SIGN_OUT:;
+            destroy_option();
+            DestroyWindow(logOutButton);
+            Login_page(hWnd);
             break;
         }
         break;
@@ -281,6 +294,7 @@ void destroy_registration_page(){
 
 void options_page(HWND hWnd)
 { //creates elements for the option page
+    logOutButton = CreateWindowW(L"Button",L"Sign Out",WS_VISIBLE|WS_CHILD,400,10,90,40,hWnd,(HMENU)SIGN_OUT,NULL,NULL);
     user.admin = 1;
     if (user.admin == 1)
     { // checks if the loged in user is admin
