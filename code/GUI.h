@@ -76,7 +76,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
         switch (wp)
         {
         case LOGIN_ACTIVATE:; //runs when the login button is pressed by the user
-            destroy_login();
+            
             // wchar_t un[30];
             // wchar_t pw[30];
             char uname[30];
@@ -85,6 +85,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             GetWindowText(passWord, pword, 30);
             //uname is the username and pword is password
             printf("%s\t%s", uname, pword);
+            destroy_login();
             // //need to check  if the user name and password is correct or not;
             options_page(hWnd);
 
