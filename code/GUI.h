@@ -12,7 +12,6 @@
 #define PRACTICE_QUESTION_BUTTON 6
 #define SUBMIT_ANSWER 7
 
-#define ID_BUTTON1 0x8801
 
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 void Login_page(HWND);
@@ -24,6 +23,7 @@ void add_question_page(HWND);
 void practice_question_page(HWND,struct Question);
 void clear_text();
 void destroy_questions();
+void destroy_registration_page();
 
 HWND userName_label, userName, passWord_label, passWord, logiInButton,
     signUpButton, signUpTitle, firstName_label, firstName, lastName_label,
@@ -104,10 +104,13 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             GetWindowText(userName, user.username, 30);
             GetWindowText(passWord, user.password, 30);
             GetWindowText(confirmPassWord, confirm_password, 30);
-            if (strcmp(user.password, confirm_password) != 0)
+            if(strcmp(user.password,"")==0 || strcmp(confirm_password,"")==0){
+                confirmPassIncorrect = CreateWindowW(L"static", L"Please enter the password.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                return 0;
+            }else if (strcmp(user.password, confirm_password) != 0)
             { //checks if the password and confirm password are same
                 confirmpass = 0;
-                confirmPassIncorrect = CreateWindowW(L"static", L"Password are not same", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                confirmPassIncorrect = CreateWindowW(L"static", L"Password are not same.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return 0;
             }
 
@@ -115,6 +118,8 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             registration(user);
 
             //new page for students shows up
+            destroy_registration_page();
+            options_page(hWnd);
             break;
 
         case ADD_QUESTION_PAGE:; // this activate when admin presses the add question button in the option page
@@ -256,6 +261,24 @@ void Signup_page(HWND hWnd)
     registerButton = CreateWindowW(L"button", L"Register", WS_VISIBLE | WS_CHILD, 200, 375, 100, 25, hWnd, (HMENU)REGISTER_USER_BUTTON, NULL, NULL);
 }
 
+void destroy_registration_page(){
+    DestroyWindow(signUpTitle);
+    DestroyWindow(firstName_label);
+    DestroyWindow(firstName);
+    DestroyWindow(lastName_label);
+    DestroyWindow(lastName);
+    DestroyWindow(eMail_label);
+    DestroyWindow(eMail);
+    DestroyWindow(userName_label);
+    DestroyWindow(userName);
+    DestroyWindow(passWord_label);
+    DestroyWindow(passWord);
+    DestroyWindow(confirmPassWord_label);
+    DestroyWindow(confirmPassWord);
+    DestroyWindow(registerButton);
+    DestroyWindow(confirmPassIncorrect);
+}
+
 void options_page(HWND hWnd)
 { //creates elements for the option page
     user.admin = 1;
@@ -308,6 +331,7 @@ void practice_question_page(HWND hWnd,struct Question que){
     fourthOption = CreateWindowW(L"button",option[3],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,200,150,25,hWnd,NULL,NULL,NULL);
     nextQuestion = CreateWindowW(L"button",L"Next question",WS_VISIBLE|WS_CHILD|SS_CENTER,150,400,200,50,hWnd,(HMENU)SUBMIT_ANSWER,NULL,NULL);
 }
+
 void destroy_questions(){
     DestroyWindow(addQuestion);
     DestroyWindow(firstOption);
@@ -316,6 +340,7 @@ void destroy_questions(){
     DestroyWindow(fourthOption);
     DestroyWindow(nextQuestion);
 }
+
 void clear_text(){
     SetWindowTextW(addQuestion,L"");
     SetWindowTextW(firstOption,L"");
