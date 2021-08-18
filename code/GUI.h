@@ -12,6 +12,8 @@
 #define PRACTICE_QUESTION_BUTTON 6
 #define SUBMIT_ANSWER 7
 #define SIGN_OUT 8
+#define BACK_TO_LOGIN 9
+#define BACK_TO_OPTIONS 10
 
 
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
@@ -24,6 +26,7 @@ void add_question_page(HWND);
 void practice_question_page(HWND,struct Question);
 void clear_text();
 void destroy_questions();
+void destroy_questions_page();
 void destroy_registration_page();
 
 HWND userName_label, userName, passWord_label, passWord, logiInButton,
@@ -32,7 +35,7 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     registerButton, confirmPassIncorrect, statusPageButton, questionAnswerButton,
     addQuestionLabel, addQuestion, addOptionLabel, firstOption, secondOption, thirdOption,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
-    nextQuestion, answerNotChecked,logOutButton;
+    nextQuestion, answerNotChecked,logOutButton,backButton;
 
 struct Register user;
 struct Question que;
@@ -196,6 +199,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             else
             {
                 answerNotChecked = CreateWindowW(L"static", L"Nothing is selected", WS_VISIBLE | WS_CHILD | SS_CENTER, 50, 300, 400, 25, hWnd, NULL, NULL, NULL);
+                return 0;
             }
             printf("%s\n", answer);
             //answer is the option choosen by the user this need to be checked
@@ -213,6 +217,14 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             destroy_option();
             DestroyWindow(logOutButton);
             Login_page(hWnd);
+            break;
+        case BACK_TO_LOGIN:;
+            destroy_registration_page();
+            Login_page(hWnd);
+            break;
+        case BACK_TO_OPTIONS:;
+            destroy_questions_page();
+            options_page(hWnd);
             break;
         }
         break;
@@ -252,12 +264,14 @@ void destroy_login()
 
 void destroy_option()
 { // destroys all the elements inside option pages
+    DestroyWindow(logOutButton);
     DestroyWindow(statusPageButton);
     DestroyWindow(questionAnswerButton);
 }
 
 void Signup_page(HWND hWnd)
 { //creates all the elements of the registration page
+    backButton = CreateWindowW(L"button",L"Go Back",WS_VISIBLE|WS_CHILD|SS_CENTER,10,10,90,40,hWnd,(HMENU)BACK_TO_LOGIN,NULL,NULL);
     signUpTitle = CreateWindowW(L"static", L"Sign UP", WS_VISIBLE | WS_CHILD | SS_CENTER, 200, 25, 100, 25, hWnd, NULL, NULL, NULL);
     firstName_label = CreateWindowW(L"static", L"First Name:", WS_VISIBLE | WS_CHILD, 50, 75, 125, 25, hWnd, NULL, NULL, NULL);
     firstName = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP, 200, 75, 250, 25, hWnd, NULL, NULL, NULL);
@@ -275,6 +289,7 @@ void Signup_page(HWND hWnd)
 }
 
 void destroy_registration_page(){
+    DestroyWindow(backButton);
     DestroyWindow(signUpTitle);
     DestroyWindow(firstName_label);
     DestroyWindow(firstName);
@@ -295,7 +310,7 @@ void destroy_registration_page(){
 void options_page(HWND hWnd)
 { //creates elements for the option page
     logOutButton = CreateWindowW(L"Button",L"Sign Out",WS_VISIBLE|WS_CHILD,400,10,90,40,hWnd,(HMENU)SIGN_OUT,NULL,NULL);
-    user.admin = 1;
+    user.admin = 0;
     if (user.admin == 1)
     { // checks if the loged in user is admin
         statusPageButton = CreateWindowW(L"button", L"View Student status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, NULL, NULL, NULL);
@@ -310,20 +325,20 @@ void options_page(HWND hWnd)
 
 void add_question_page(HWND hWnd)
 { // this is the user interface for admin to add question to the database
-    addQuestionLabel = CreateWindowW(L"static", L"Add your question below:", WS_VISIBLE | WS_CHILD, 50, 50, 400, 25, hWnd, NULL, NULL, NULL);
+    backButton = CreateWindowW(L"button",L"Go Back",WS_VISIBLE|WS_CHILD|SS_CENTER,10,10,90,30,hWnd,(HMENU)BACK_TO_OPTIONS,NULL,NULL);
+    addQuestionLabel = CreateWindowW(L"static", L"Add your question below:", WS_VISIBLE | WS_CHILD, 50, 60, 400, 25, hWnd, NULL, NULL, NULL);
     addQuestion = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 50, 100, 400, 25, hWnd, NULL, NULL, NULL);
-    addOptionLabel = CreateWindowW(L"static", L"Add your options below:", WS_VISIBLE | WS_CHILD, 50, 150, 400, 25, hWnd, NULL, NULL, NULL);
+    addOptionLabel = CreateWindowW(L"static", L"Add your options below:", WS_VISIBLE | WS_CHILD, 50, 160, 400, 25, hWnd, NULL, NULL, NULL);
     firstOption = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 50, 200, 175, 25, hWnd, NULL, NULL, NULL);
     secondOption = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 275, 200, 175, 25, hWnd, NULL, NULL, NULL);
     thirdOption = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 50, 250, 175, 25, hWnd, NULL, NULL, NULL);
     fourthOption = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 275, 250, 175, 25, hWnd, NULL, NULL, NULL);
-    correctAnswerLabel = CreateWindowW(L"static", L"Enter the correct answer from one of the above:", WS_VISIBLE | WS_CHILD, 50, 300, 400, 25, hWnd, NULL, NULL, NULL);
+    correctAnswerLabel = CreateWindowW(L"static", L"Enter the correct answer from one of the above:", WS_VISIBLE | WS_CHILD, 50, 310, 400, 25, hWnd, NULL, NULL, NULL);
     correctAnswer = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 50, 350, 175, 25, hWnd, NULL, NULL, NULL);
     addQuestionToDatabase = CreateWindowW(L"button", L"Add your question to database", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 400, 300, 25, hWnd, (HMENU)ADD_QUESTION_TO_DATABASE, NULL, NULL); // pressing this button will add the question to the database
 }
 
 void practice_question_page(HWND hWnd,struct Question que){
-    DestroyWindow(answerNotChecked);
     //retrieve the question here:
 
     // strcpy(que.question,"What is your name?");
@@ -338,6 +353,7 @@ void practice_question_page(HWND hWnd,struct Question que){
     mbstowcs(option[1],que.options[1],50);
     mbstowcs(option[2],que.options[2],50);
     mbstowcs(option[3],que.options[3],50);
+    backButton = CreateWindowW(L"button",L"Go Back",WS_VISIBLE|WS_CHILD|SS_CENTER,10,10,90,30,hWnd,(HMENU)BACK_TO_OPTIONS,NULL,NULL);
     addQuestion = CreateWindowW(L"static",quest,WS_VISIBLE|WS_CHILD|SS_CENTER,50,100,400,25,hWnd,NULL,NULL,NULL);
     firstOption = CreateWindowW(L"button",option[0],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,50,150,150,25,hWnd,NULL,NULL,NULL);
     secondOption = CreateWindowW(L"button",option[1],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,150,150,25,hWnd,NULL,NULL,NULL);
@@ -353,6 +369,17 @@ void destroy_questions(){
     DestroyWindow(thirdOption);
     DestroyWindow(fourthOption);
     DestroyWindow(nextQuestion);
+    DestroyWindow(answerNotChecked);
+}
+
+void destroy_questions_page(){
+    destroy_questions();
+    DestroyWindow(addQuestionLabel);
+    DestroyWindow(backButton);
+    DestroyWindow(addOptionLabel);
+    DestroyWindow(correctAnswerLabel);
+    DestroyWindow(correctAnswer);
+    DestroyWindow(addQuestionToDatabase);
 }
 
 void clear_text(){
