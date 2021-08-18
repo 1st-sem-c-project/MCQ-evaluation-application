@@ -74,6 +74,19 @@ int registration(struct Register reg)
     if (fwrite != 0)
     {
         printf("Contents to file written successfully !\n");
+        FILE *numberptr,*tempfile;
+        numberptr = fopen("resources/question_user_number.txt","rb");
+        tempfile = fopen("resources/temp.txt","wb");
+        int question_number;
+        int user_number;
+        fscanf(numberptr,"%d %d",&question_number,&user_number);
+        user_number++;
+        fprintf(tempfile,"%d %d",question_number,user_number);
+        fclose(numberptr);
+        fclose(tempfile);
+        remove("resources/question_user_number.txt");
+        rename("resources/temp.txt","resources/question_user_number.txt");
+
     }
     else
         printf("Error writing file !\n");

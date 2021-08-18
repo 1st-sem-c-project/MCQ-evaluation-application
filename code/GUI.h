@@ -33,25 +33,7 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
     nextQuestion, answerNotChecked;
 
-// struct userdata
-// {
-//     char firstname[30];
-//     char lastname[30];
-//     char email[50];
-//     char username[30];
-//     char password[30];
-//     int total_answers;
-//     int correct_answers;
-//     int incorrect_answers;
-//     int score;
-//     int admin;
-// } user;
 struct Register user;
-// struct Question{
-//     char question[300];
-//     char options[4][50];
-//     char correct[50];
-// }que;
 struct Question que;
 int confirmpass = 1;
 
