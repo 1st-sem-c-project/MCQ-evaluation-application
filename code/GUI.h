@@ -364,6 +364,7 @@ void practice_question_page(HWND hWnd,struct Question que){
 }
 
 void destroy_questions(){
+    DestroyWindow(backButton);
     DestroyWindow(addQuestion);
     DestroyWindow(firstOption);
     DestroyWindow(secondOption);
