@@ -4,7 +4,6 @@
 #include "question_answer_display.h"
 #include "login_backend.h"
 #include "logout.h"
-// #include "emailValidation.h"
 
 #define LOGIN_ACTIVATE 1
 #define SIGNUP_ACTIVATE 2
@@ -87,8 +86,8 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             GetWindowText(passWord, pword, 30);
             //uname is the username and pword is password
             printf("%s\t%s", uname, pword);
-            int emailValidation = emailValidate(uname);
-            if (emailValidation == 1)
+            int emailValidation = emailValidate1(uname);
+            if (emailValidation == 0)
             {
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return -1;
@@ -137,8 +136,8 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 confirmPassIncorrect = CreateWindowW(L"static", L"Password are not same.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return 0;
             }
-            emailValidation = emailValidate(user.email);
-            if (emailValidation == 1)
+            int emailValidation1 = emailValidate1(user.email);
+            if (emailValidation1 == 0)
             {
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return -1;

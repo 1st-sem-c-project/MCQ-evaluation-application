@@ -13,6 +13,7 @@ int login(char *email, char *password, struct Register *user)
 
     FILE *login;
     struct Register input;
+    
 
    
       
@@ -30,10 +31,12 @@ int login(char *email, char *password, struct Register *user)
         int result =strcmp(email, input.email);
 
         int result1 =strcmp(password, input.password);
+        printf("%d %d", result1, result);
         char firstname[20], text[7],resources [100], filepath[100];
 
         if(result== 0 && result1 ==0) {
             FILE *userlogin;
+            printf("Hello world");
             
             strcpy(user->firstname, input.firstname);
             strcpy(user->lastname, input.lastname);
