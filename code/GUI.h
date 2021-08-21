@@ -2,7 +2,9 @@
 #include<stdio.h>
 #include<windowsx.h>
 #include"question_answer_display.h"
-#include"sign_up.h"
+#include "login_backend.h"
+#include "logout.h"
+#include "emailValidation.h"
 
 #define LOGIN_ACTIVATE 1
 #define SIGNUP_ACTIVATE 2
@@ -35,7 +37,7 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     registerButton, confirmPassIncorrect, statusPageButton, questionAnswerButton,
     addQuestionLabel, addQuestion, addOptionLabel, firstOption, secondOption, thirdOption,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
-    nextQuestion, answerNotChecked,logOutButton,backButton;
+    nextQuestion, answerNotChecked,logOutButton,backButton, emailInvalid, LoginUnsuccessfull ;
 
 struct Register user;
 struct Question que;
@@ -76,7 +78,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
         switch (wp)
         {
         case LOGIN_ACTIVATE:; //runs when the login button is pressed by the user
-            destroy_login();
+            
             // wchar_t un[30];
             // wchar_t pw[30];
             char uname[30];
@@ -85,8 +87,19 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             GetWindowText(passWord, pword, 30);
             //uname is the username and pword is password
             printf("%s\t%s", uname, pword);
+            int emailValidation = emailValidate(uname);
+            if(emailValidation ==0){
+                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+            }
+            int loginCondition = login(uname,pword,&user);
             // //need to check  if the user name and password is correct or not;
-            options_page(hWnd);
+            if(loginCondition == 1){
+                 destroy_login();
+                options_page(hWnd);
+            } else{
+                 LoginUnsuccessfull= CreateWindowW(L"static", L"Please register to login", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+            }
+           
 
             break;
 
@@ -116,6 +129,10 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 confirmpass = 0;
                 confirmPassIncorrect = CreateWindowW(L"static", L"Password are not same.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return 0;
+            }
+            int emailValidation = emailValidate(user.email);
+            if(emailValidation ==0){
+                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
             }
 
             // now here the user information is stored in the database
@@ -214,6 +231,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             practice_question_page(hWnd,que);
             break;
         case SIGN_OUT:;
+            logout(user.firstname);
             destroy_option();
             DestroyWindow(logOutButton);
             Login_page(hWnd);
