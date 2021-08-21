@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 int emailValidate1(char *email){
-    char validate[100];
+    char validate[10];
     char gmail[] = "@gmail.com";
     char email1[] = "@email.com";
      int length = strlen(email);
@@ -14,7 +14,6 @@ int emailValidate1(char *email){
     }
     int result = strcmp(validate, email1);
     int result1 = strcmp(validate, gmail);
-
     if (result == 0 || result1 == 0){
         return 1; 
 } else return 0;
