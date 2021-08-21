@@ -23,7 +23,7 @@ int registration(struct Register reg)
     // char gmail[] = "@gmail.com";
     // char email1[] = "@email.com";
     FILE *user;
-    int emailValidation = emailValidate(reg.email);
+    int emailValidation = emailValidate1(reg.email);
     if(emailValidation == 0){
         return 0;
     }
