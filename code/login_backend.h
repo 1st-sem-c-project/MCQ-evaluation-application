@@ -40,20 +40,15 @@ int login(char *email, char *password, struct Register *user)
             strcpy(user->email, input.email);
             strcpy(user->username, input.username);
             strcpy(user->password, input.password);
-            strcpy(user->total_answers, input.total_answers);
-            strcpy(user->correct_answers, input.correct_answers);
-            strcpy(user->incorrect_answers, input.incorrect_answers);
-            strcpy(user->score, input.score);
-            strcpy(user->admin, input.admin);
+            (*user).total_answers = input.total_answers;
+            (*user).correct_answers = input.correct_answers;
+            (*user).incorrect_answers = input.incorrect_answers;
+            (*user).score = input.score;
+            (*user).admin = input.admin;
 
-            strcpy(firstname, input.firstname);
-            strcpy(text, ".txt");
-            strcpy(resources, "resources/");
-            strcat(resources, firstname);
-            strcat(resources,text);
-            strcpy(filepath, resources);
             
-            userlogin =fopen(filepath,"w");
+            
+            userlogin =fopen("resources/active_user.txt","w");
             fwrite(&input, sizeof(struct Register), 1, userlogin);
              if (fwrite != 0)
                 {

@@ -42,7 +42,7 @@ int registration(struct Register reg)
    
     // write struct to file
     fwrite(&reg, sizeof(reg), 1, user);
-
+    fputc('\n',user);
     if (fwrite != 0)
     {
         printf("Contents to file written successfully !\n");
@@ -67,14 +67,8 @@ int registration(struct Register reg)
     fclose(user);
     char firstname[20], text[7],resources [100], filepath[100];
     FILE *userlogin;
-    strcpy(firstname, reg.firstname);
-    strcpy(text, ".txt");
-    strcpy(resources, "resources/");
-    strcat(resources, firstname);
-    strcat(resources,text);
-    strcpy(filepath, resources);
             
-    userlogin =fopen(filepath,"w");
+    userlogin =fopen("resources/active_user.txt","w");
     fwrite(&reg, sizeof(reg), 1, userlogin);
     if (fwrite != 0)
         {

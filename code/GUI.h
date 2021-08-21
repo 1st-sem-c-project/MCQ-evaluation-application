@@ -4,7 +4,7 @@
 #include "question_answer_display.h"
 #include "login_backend.h"
 #include "logout.h"
-#include "emailValidation.h"
+// #include "emailValidation.h"
 
 #define LOGIN_ACTIVATE 1
 #define SIGNUP_ACTIVATE 2
@@ -77,7 +77,8 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
         switch (wp)
         {
         case LOGIN_ACTIVATE:; //runs when the login button is pressed by the user
-
+            DestroyWindow(emailInvalid);
+            DestroyWindow(LoginUnsuccessfull);
             // wchar_t un[30];
             // wchar_t pw[30];
             char uname[30];
@@ -87,9 +88,10 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             //uname is the username and pword is password
             printf("%s\t%s", uname, pword);
             int emailValidation = emailValidate(uname);
-            if (emailValidation == 0)
+            if (emailValidation == 1)
             {
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                return -1;
             }
             int loginCondition = login(uname, pword, &user);
             // //need to check  if the user name and password is correct or not;
@@ -101,6 +103,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             else
             {
                 LoginUnsuccessfull = CreateWindowW(L"static", L"Please register to login", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                return -1;
             }
 
             break;
@@ -134,10 +137,11 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 confirmPassIncorrect = CreateWindowW(L"static", L"Password are not same.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return 0;
             }
-            int emailValidation = emailValidate(user.email);
-            if (emailValidation == 0)
+            emailValidation = emailValidate(user.email);
+            if (emailValidation == 1)
             {
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                return -1;
             }
 
             // now here the user information is stored in the database
@@ -268,7 +272,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 void Login_page(HWND hWnd)
 { // this pages creates all the elements for the login page
-    userName_label = CreateWindowW(L"static", L"Username:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 75, 200, 25, hWnd, NULL, NULL, NULL);
+    userName_label = CreateWindowW(L"static", L"Email:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 75, 200, 25, hWnd, NULL, NULL, NULL);
     userName = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP, 150, 100, 200, 25, hWnd, NULL, NULL, NULL);
     passWord_label = CreateWindowW(L"static", L"Password:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 175, 200, 25, hWnd, NULL, NULL, NULL);
     passWord = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD | WS_TABSTOP, 150, 200, 200, 25, hWnd, NULL, NULL, NULL);
@@ -278,6 +282,8 @@ void Login_page(HWND hWnd)
 
 void destroy_login()
 { // destroys all the elements inside the login page
+    DestroyWindow(emailInvalid);
+    DestroyWindow(LoginUnsuccessfull);
     DestroyWindow(userName_label);
     DestroyWindow(userName);
     DestroyWindow(passWord_label);
@@ -335,7 +341,6 @@ void destroy_registration_page()
 void options_page(HWND hWnd)
 { //creates elements for the option page
     logOutButton = CreateWindowW(L"Button", L"Sign Out", WS_VISIBLE | WS_CHILD, 400, 10, 90, 40, hWnd, (HMENU)SIGN_OUT, NULL, NULL);
-    user.admin = 0;
     if (user.admin == 1)
     { // checks if the loged in user is admin
         statusPageButton = CreateWindowW(L"button", L"View Student status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, NULL, NULL, NULL);
