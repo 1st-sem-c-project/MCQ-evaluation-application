@@ -1,7 +1,7 @@
-#include<windows.h>
-#include<stdio.h>
-#include<windowsx.h>
-#include"question_answer_display.h"
+#include <windows.h>
+#include <stdio.h>
+#include <windowsx.h>
+#include "question_answer_display.h"
 #include "login_backend.h"
 #include "logout.h"
 #include "emailValidation.h"
@@ -17,7 +17,6 @@
 #define BACK_TO_LOGIN 9
 #define BACK_TO_OPTIONS 10
 
-
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 void Login_page(HWND);
 void Signup_page(HWND);
@@ -25,7 +24,7 @@ void options_page(HWND);
 void destroy_login();
 void destroy_option();
 void add_question_page(HWND);
-void practice_question_page(HWND,struct Question);
+void practice_question_page(HWND, struct Question);
 void clear_text();
 void destroy_questions();
 void destroy_questions_page();
@@ -37,7 +36,7 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     registerButton, confirmPassIncorrect, statusPageButton, questionAnswerButton,
     addQuestionLabel, addQuestion, addOptionLabel, firstOption, secondOption, thirdOption,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
-    nextQuestion, answerNotChecked,logOutButton,backButton, emailInvalid, LoginUnsuccessfull ;
+    nextQuestion, answerNotChecked, logOutButton, backButton, emailInvalid, LoginUnsuccessfull;
 
 struct Register user;
 struct Question que;
@@ -78,7 +77,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
         switch (wp)
         {
         case LOGIN_ACTIVATE:; //runs when the login button is pressed by the user
-            
+
             // wchar_t un[30];
             // wchar_t pw[30];
             char uname[30];
@@ -88,18 +87,21 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             //uname is the username and pword is password
             printf("%s\t%s", uname, pword);
             int emailValidation = emailValidate(uname);
-            if(emailValidation ==0){
+            if (emailValidation == 0)
+            {
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
             }
-            int loginCondition = login(uname,pword,&user);
+            int loginCondition = login(uname, pword, &user);
             // //need to check  if the user name and password is correct or not;
-            if(loginCondition == 1){
-                 destroy_login();
+            if (loginCondition == 1)
+            {
+                destroy_login();
                 options_page(hWnd);
-            } else{
-                 LoginUnsuccessfull= CreateWindowW(L"static", L"Please register to login", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
             }
-           
+            else
+            {
+                LoginUnsuccessfull = CreateWindowW(L"static", L"Please register to login", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+            }
 
             break;
 
@@ -121,17 +123,20 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             GetWindowText(userName, user.username, 30);
             GetWindowText(passWord, user.password, 30);
             GetWindowText(confirmPassWord, confirm_password, 30);
-            if(strcmp(user.password,"")==0 || strcmp(confirm_password,"")==0){
+            if (strcmp(user.password, "") == 0 || strcmp(confirm_password, "") == 0)
+            {
                 confirmPassIncorrect = CreateWindowW(L"static", L"Please enter the password.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return 0;
-            }else if (strcmp(user.password, confirm_password) != 0)
+            }
+            else if (strcmp(user.password, confirm_password) != 0)
             { //checks if the password and confirm password are same
                 confirmpass = 0;
                 confirmPassIncorrect = CreateWindowW(L"static", L"Password are not same.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return 0;
             }
             int emailValidation = emailValidate(user.email);
-            if(emailValidation ==0){
+            if (emailValidation == 0)
+            {
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
             }
 
@@ -189,7 +194,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             destroy_option();
             get_question(&que);
             //display the question here
-            practice_question_page(hWnd,que);
+            practice_question_page(hWnd, que);
 
             break;
         case SUBMIT_ANSWER:;
@@ -220,15 +225,16 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             }
             printf("%s\n", answer);
             //answer is the option choosen by the user this need to be checked
-            printf("%d",user.score);
-            if(strcmp(answer,que.correct)==0){
+            printf("%d", user.score);
+            if (strcmp(answer, que.correct) == 0)
+            {
                 user.score++;
             }
-            printf("%d",user.score);
+            printf("%d", user.score);
             //now here the procssing is done for checking the answer and storing the status in the database
             get_question(&que);
             destroy_questions();
-            practice_question_page(hWnd,que);
+            practice_question_page(hWnd, que);
             break;
         case SIGN_OUT:;
             logout(user.firstname);
@@ -289,7 +295,7 @@ void destroy_option()
 
 void Signup_page(HWND hWnd)
 { //creates all the elements of the registration page
-    backButton = CreateWindowW(L"button",L"Go Back",WS_VISIBLE|WS_CHILD|SS_CENTER,10,10,90,40,hWnd,(HMENU)BACK_TO_LOGIN,NULL,NULL);
+    backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 40, hWnd, (HMENU)BACK_TO_LOGIN, NULL, NULL);
     signUpTitle = CreateWindowW(L"static", L"Sign UP", WS_VISIBLE | WS_CHILD | SS_CENTER, 200, 25, 100, 25, hWnd, NULL, NULL, NULL);
     firstName_label = CreateWindowW(L"static", L"First Name:", WS_VISIBLE | WS_CHILD, 50, 75, 125, 25, hWnd, NULL, NULL, NULL);
     firstName = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP, 200, 75, 250, 25, hWnd, NULL, NULL, NULL);
@@ -306,7 +312,8 @@ void Signup_page(HWND hWnd)
     registerButton = CreateWindowW(L"button", L"Register", WS_VISIBLE | WS_CHILD, 200, 375, 100, 25, hWnd, (HMENU)REGISTER_USER_BUTTON, NULL, NULL);
 }
 
-void destroy_registration_page(){
+void destroy_registration_page()
+{
     DestroyWindow(backButton);
     DestroyWindow(signUpTitle);
     DestroyWindow(firstName_label);
@@ -327,7 +334,7 @@ void destroy_registration_page(){
 
 void options_page(HWND hWnd)
 { //creates elements for the option page
-    logOutButton = CreateWindowW(L"Button",L"Sign Out",WS_VISIBLE|WS_CHILD,400,10,90,40,hWnd,(HMENU)SIGN_OUT,NULL,NULL);
+    logOutButton = CreateWindowW(L"Button", L"Sign Out", WS_VISIBLE | WS_CHILD, 400, 10, 90, 40, hWnd, (HMENU)SIGN_OUT, NULL, NULL);
     user.admin = 0;
     if (user.admin == 1)
     { // checks if the loged in user is admin
@@ -343,7 +350,7 @@ void options_page(HWND hWnd)
 
 void add_question_page(HWND hWnd)
 { // this is the user interface for admin to add question to the database
-    backButton = CreateWindowW(L"button",L"Go Back",WS_VISIBLE|WS_CHILD|SS_CENTER,10,10,90,30,hWnd,(HMENU)BACK_TO_OPTIONS,NULL,NULL);
+    backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
     addQuestionLabel = CreateWindowW(L"static", L"Add your question below:", WS_VISIBLE | WS_CHILD, 50, 60, 400, 25, hWnd, NULL, NULL, NULL);
     addQuestion = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL, 50, 100, 400, 25, hWnd, NULL, NULL, NULL);
     addOptionLabel = CreateWindowW(L"static", L"Add your options below:", WS_VISIBLE | WS_CHILD, 50, 160, 400, 25, hWnd, NULL, NULL, NULL);
@@ -356,7 +363,8 @@ void add_question_page(HWND hWnd)
     addQuestionToDatabase = CreateWindowW(L"button", L"Add your question to database", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 400, 300, 25, hWnd, (HMENU)ADD_QUESTION_TO_DATABASE, NULL, NULL); // pressing this button will add the question to the database
 }
 
-void practice_question_page(HWND hWnd,struct Question que){
+void practice_question_page(HWND hWnd, struct Question que)
+{
     //retrieve the question here:
 
     // strcpy(que.question,"What is your name?");
@@ -366,21 +374,23 @@ void practice_question_page(HWND hWnd,struct Question que){
     // strcpy(que.options[3],"Niraj");
     wchar_t quest[300];
     wchar_t option[4][50];
-    mbstowcs(quest,que.question,300);
-    mbstowcs(option[0],que.options[0],50);
-    mbstowcs(option[1],que.options[1],50);
-    mbstowcs(option[2],que.options[2],50);
-    mbstowcs(option[3],que.options[3],50);
-    backButton = CreateWindowW(L"button",L"Go Back",WS_VISIBLE|WS_CHILD|SS_CENTER,10,10,90,30,hWnd,(HMENU)BACK_TO_OPTIONS,NULL,NULL);
-    addQuestion = CreateWindowW(L"static",quest,WS_VISIBLE|WS_CHILD|SS_CENTER,50,100,400,25,hWnd,NULL,NULL,NULL);
-    firstOption = CreateWindowW(L"button",option[0],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,50,150,150,25,hWnd,NULL,NULL,NULL);
-    secondOption = CreateWindowW(L"button",option[1],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,150,150,25,hWnd,NULL,NULL,NULL);
-    thirdOption = CreateWindowW(L"button",option[2],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,50,200,150,25,hWnd,NULL,NULL,NULL);
-    fourthOption = CreateWindowW(L"button",option[3],WS_VISIBLE|WS_CHILD|SS_CENTER|BS_AUTORADIOBUTTON,250,200,150,25,hWnd,NULL,NULL,NULL);
-    nextQuestion = CreateWindowW(L"button",L"Next question",WS_VISIBLE|WS_CHILD|SS_CENTER,150,400,200,50,hWnd,(HMENU)SUBMIT_ANSWER,NULL,NULL);
+    mbstowcs(quest, que.question, 300);
+    mbstowcs(option[0], que.options[0], 50);
+    mbstowcs(option[1], que.options[1], 50);
+    mbstowcs(option[2], que.options[2], 50);
+    mbstowcs(option[3], que.options[3], 50);
+    backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
+    addQuestion = CreateWindowW(L"static", quest, WS_VISIBLE | WS_CHILD | SS_CENTER, 50, 100, 400, 25, hWnd, NULL, NULL, NULL);
+    firstOption = CreateWindowW(L"button", option[0], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 50, 150, 150, 25, hWnd, NULL, NULL, NULL);
+    secondOption = CreateWindowW(L"button", option[1], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 250, 150, 150, 25, hWnd, NULL, NULL, NULL);
+    thirdOption = CreateWindowW(L"button", option[2], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 50, 200, 150, 25, hWnd, NULL, NULL, NULL);
+    fourthOption = CreateWindowW(L"button", option[3], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 250, 200, 150, 25, hWnd, NULL, NULL, NULL);
+    nextQuestion = CreateWindowW(L"button", L"Next question", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 400, 200, 50, hWnd, (HMENU)SUBMIT_ANSWER, NULL, NULL);
 }
 
-void destroy_questions(){
+void destroy_questions()
+{
+    DestroyWindow(backButton);
     DestroyWindow(addQuestion);
     DestroyWindow(firstOption);
     DestroyWindow(secondOption);
@@ -390,7 +400,8 @@ void destroy_questions(){
     DestroyWindow(answerNotChecked);
 }
 
-void destroy_questions_page(){
+void destroy_questions_page()
+{
     destroy_questions();
     DestroyWindow(addQuestionLabel);
     DestroyWindow(backButton);
@@ -400,11 +411,12 @@ void destroy_questions_page(){
     DestroyWindow(addQuestionToDatabase);
 }
 
-void clear_text(){
-    SetWindowTextW(addQuestion,L"");
-    SetWindowTextW(firstOption,L"");
-    SetWindowTextW(secondOption,L"");
-    SetWindowTextW(thirdOption,L"");
-    SetWindowTextW(fourthOption,L"");
-    SetWindowTextW(correctAnswer,L"");
+void clear_text()
+{
+    SetWindowTextW(addQuestion, L"");
+    SetWindowTextW(firstOption, L"");
+    SetWindowTextW(secondOption, L"");
+    SetWindowTextW(thirdOption, L"");
+    SetWindowTextW(fourthOption, L"");
+    SetWindowTextW(correctAnswer, L"");
 }
