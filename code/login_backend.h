@@ -80,3 +80,15 @@ int login(char *email, char *password, struct Register *user)
   
     return 0;
 }
+
+int check_active(struct Register *user){
+    FILE *fptr = fopen("resources/active_user.txt","r");
+    if(fptr == NULL){
+        fclose(fptr);
+        return 0;
+    }else{
+        fread(user,sizeof(struct Register),1,fptr);
+    }
+    fclose(fptr);
+    return 1;
+}

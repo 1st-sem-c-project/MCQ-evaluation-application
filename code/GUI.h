@@ -285,8 +285,13 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
         }
         break;
 
-    case WM_CREATE: //runs only when the window is created for the first time.
-        Login_page(hWnd);
+    case WM_CREATE:; //runs only when the window is created for the first time.
+        int active = check_active(&user);
+        if (active == 0){
+            Login_page(hWnd);
+        }else if(active == 1) {
+            options_page(hWnd);
+        }
         break;
 
     case WM_DESTROY: //this case checks if the windows is closed;
