@@ -42,7 +42,7 @@ int registration(struct Register reg)
    
     // write struct to file
     fwrite(&reg, sizeof(reg), 1, user);
-    fputc('\n',user);
+    // fputc('\n',user);
     if (fwrite != 0)
     {
         printf("Contents to file written successfully !\n");

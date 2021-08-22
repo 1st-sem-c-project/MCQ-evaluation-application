@@ -256,7 +256,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             practice_question_page(hWnd, que);
             break;
         case SIGN_OUT:;
-            logout(user.firstname);
+            logout();
             destroy_option();
             DestroyWindow(logOutButton);
             Login_page(hWnd);
