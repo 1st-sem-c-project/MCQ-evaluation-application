@@ -9,7 +9,7 @@ struct Register
     char lastname[30];
     char email[50];
     char username[30];
-    char password[30];
+    char password[150];
     int total_answers;
     int correct_answers;
     int incorrect_answers;
@@ -19,13 +19,12 @@ struct Register
 
 int registration(struct Register reg)
 {
-    // char email[100], password1[100], password2[100], validate[100];
-    // char gmail[] = "@gmail.com";
-    // char email1[] = "@email.com";
+
     FILE *user;
 
     // open file for writing
     user = fopen("resources/username_password.txt", "ab");
+    
     if (user == NULL)
     {
         fprintf(stderr, "\nError opend file\n");
