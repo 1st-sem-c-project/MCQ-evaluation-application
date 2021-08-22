@@ -15,14 +15,6 @@ void get_student_data(struct Register *student,int *position){
     for (int i = 0; i < *position; i++)
     {
         fread(student,sizeof(struct Register),1,fptr);
-        if((*student).admin == 1){
-            if (*position == totalStudents){
-                rewind(fptr);
-                *position = 1;
-            }
-            fread(student,sizeof(struct Register),1,fptr);
-            (*position)++;
-        }
     }
     fclose(fptr);
     (*position)++;
