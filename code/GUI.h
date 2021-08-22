@@ -46,7 +46,7 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
     nextQuestion, answerNotChecked, logOutButton, backButton, emailInvalid, LoginUnsuccessfull,
     name_label, name, totalAttempts_label, totalAttempts, inCorrectAnswer, inCorrectAnswerLabel,
-    scoreLabel, score, nextStudent;
+    scoreLabel, score, nextStudent, emailDouble;
 
 struct Register user;
 struct Question que;
@@ -129,6 +129,8 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
         case REGISTER_USER_BUTTON:; 
         //this activates when the user presses the register button in signup page
+             DestroyWindow(emailInvalid);
+            DestroyWindow(emailDouble);
             char confirm_password[30];
             char hashedpassword[30];
             user.score = 0;
@@ -164,6 +166,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 return -1;
             }
             int notValid = emailChecker (user.email);
+        
                     // printf("%c", password3);
             char hello1[150];
             passwordEncoder(user.password, hello1);
@@ -173,7 +176,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 registration(user);
             }
             else{
-                 emailInvalid = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                 emailDouble = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
 
@@ -396,6 +399,7 @@ void destroy_registration_page()
     DestroyWindow(confirmPassWord);
     DestroyWindow(registerButton);
     DestroyWindow(confirmPassIncorrect);
+    DestroyWindow(emailInvalid);
 }
 
 void options_page(HWND hWnd)

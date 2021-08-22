@@ -19,10 +19,12 @@ int login(char *email, char *password, struct Register *user)
         fprintf(stderr, "\nError opening file\n");
         exit(1);
     }
-    printf("%c", password);
+    
     // read file contents till end of file
     while (fread(&input, sizeof(struct Register), 1, login1))
     {
+        printf("%c", input.email);
+        printf("%c", input.password);
         int result = strcmp(email, input.email);
         int result1 = strcmp(password, input.password);
         char firstname[20], text[7], resources[100], filepath[100];
