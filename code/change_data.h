@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 void store_in_database(struct Register user){
     FILE *auser = fopen("resources/active_user.txt","w");
     fwrite(&user,sizeof(struct Register),1,auser);
@@ -28,11 +30,13 @@ void get_student_data(struct Register *student,int *position){
         *position = 1;
     }
 }
-void change_filename(){
-    int removed = remove("resources/username_password.txt");
+void remove_filename(){
+    char filename[100] ="resources/username_password.txt";
+    int removed = remove(filename);
     printf("\n\n%d\n\n",removed);
     if(removed == 0){
-        rename("resources/active_user.txt","resources/username_password1.txt");
+        int renamed =rename("resources/active_user.txt",filename);
+        printf("       %d", renamed);
     }else{
         printf("not renamed!");
     }

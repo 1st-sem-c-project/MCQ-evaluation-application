@@ -1,4 +1,4 @@
-// C program for writing 
+// C program for writing
 // struct to file
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,38 +6,28 @@
 #include "sign_up.h"
 
 // a struct to read and write
-  
+
 int login(char *email, char *password, struct Register *user)
 {
-    
-
-    FILE *login;
+    FILE *login1;
+    FILE *userlogin;
     struct Register input;
-    
-
-   
-      
-    // Open person.dat for reading
-    login = fopen ("resources/username_password.txt", "r");
-    if (login == NULL)
+    // Open resources/username_password.txt for reading
+    login1 = fopen("resources/username_password.txt", "r");
+    if (login1 == NULL)
     {
         fprintf(stderr, "\nError opening file\n");
-        exit (1);
+        exit(1);
     }
 
     // read file contents till end of file
-    while(fread(&input, sizeof(struct Register), 1, login)){
-        
-        int result =strcmp(email, input.email);
-
-        int result1 =strcmp(password, input.password);
-        printf("%d %d", result1, result);
-        char firstname[20], text[7],resources [100], filepath[100];
-
-        if(result== 0 && result1 ==0) {
-            FILE *userlogin;
-            printf("Hello world");
-            
+    while (fread(&input, sizeof(struct Register), 1, login1))
+    {
+        int result = strcmp(email, input.email);
+        int result1 = strcmp(password, input.password);
+        char firstname[20], text[7], resources[100], filepath[100];
+        if (result == 0 && result1 == 0)
+        {
             strcpy(user->firstname, input.firstname);
             strcpy(user->lastname, input.lastname);
             strcpy(user->email, input.email);
@@ -49,45 +39,48 @@ int login(char *email, char *password, struct Register *user)
             (*user).score = input.score;
             (*user).admin = input.admin;
 
-            
-            
-            userlogin =fopen("resources/active_user.txt","w");
+            userlogin = fopen("resources/active_user.txt", "w");
             fwrite(&input, sizeof(struct Register), 1, userlogin);
-             if (fwrite != 0)
-                {
-                    printf("Contents to file written successfully !\n");
+            if (fwrite != 0)
+            {
+                printf("Contents to file written successfully !\n");
             }
-             else {
-                 printf("Error writing file !\n");
-             }
-             printf("Login successfulll");
-            
-             fclose(userlogin);
-              return 1;
-             break;
-                
-        } 
-        
+            else
+            {
+                printf("Error writing file !\n");
+            }
+            printf("Login successfulll");
+            fclose(userlogin);
+            fclose(login1);
+            return 1;
+            break;
+        }
 
-       
+        else
+        {
+            printf("please register to login\n");
+            return 0;
+        }
     }
-    printf("please register to login\n");
-    return 0;
-        
-        
+    fclose(userlogin);
+
     // close file
-    fclose (login);
-  
+    fclose(login1);
+
     return 0;
 }
 
-int check_active(struct Register *user){
-    FILE *fptr = fopen("resources/active_user.txt","r");
-    if(fptr == NULL){
+int check_active(struct Register *user)
+{
+    FILE *fptr = fopen("resources/active_user.txt", "r");
+    if (fptr == NULL)
+    {
         fclose(fptr);
         return 0;
-    }else{
-        fread(user,sizeof(struct Register),1,fptr);
+    }
+    else
+    {
+        fread(user, sizeof(struct Register), 1, fptr);
     }
     fclose(fptr);
     return 1;
