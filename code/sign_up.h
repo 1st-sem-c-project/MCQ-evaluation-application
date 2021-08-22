@@ -23,10 +23,6 @@ int registration(struct Register reg)
     // char gmail[] = "@gmail.com";
     // char email1[] = "@email.com";
     FILE *user;
-    int emailValidation = emailValidate1(reg.email);
-    if(emailValidation == 0){
-        return 0;
-    }
 
     // open file for writing
     user = fopen("resources/username_password.txt", "ab");
