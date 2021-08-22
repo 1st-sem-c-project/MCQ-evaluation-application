@@ -19,7 +19,7 @@ int login(char *email, char *password, struct Register *user)
         fprintf(stderr, "\nError opening file\n");
         exit(1);
     }
-    printf("%c", password);
+    printf("\n\n%s\n\n", password);
     // read file contents till end of file
     while (fread(&input, sizeof(struct Register), 1, login1))
     {
@@ -44,27 +44,18 @@ int login(char *email, char *password, struct Register *user)
             if (fwrite != 0)
             {
                 printf("Contents to file written successfully !\n");
-                fclose(userlogin);
-                fclose(login1);
-                return 1;
-            }
-            else
-            {
+            }else{
                 printf("Error writing file !\n");
             }
             printf("Login successfulll");
             fclose(userlogin);
+            fclose(login1);
+            return 1;
             break;
         }
-
-        else
-        {
-            printf("please register to login\n");
-            return 0;
-        }
     }
+    printf("please register");
     fclose(userlogin);
-
     // close file
     fclose(login1);
 

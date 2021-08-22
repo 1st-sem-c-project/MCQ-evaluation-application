@@ -214,7 +214,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             int emailValidation1 = emailValidate1(user.email);
             if (emailValidation1 == 0)
             {
-                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD, 50, 425, 450, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
             int notValid = emailChecker (user.email);
@@ -227,7 +227,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 registration(user);
             }
             else{
-                 emailInvalid = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                emailInvalid = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD , 50, 425, 450, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
 
@@ -451,6 +451,7 @@ void destroy_registration_page()
     DestroyWindow(confirmPassWord);
     DestroyWindow(registerButton);
     DestroyWindow(confirmPassIncorrect);
+    DestroyWindow(emailInvalid);
 }
 
 void options_page(HWND hWnd)
