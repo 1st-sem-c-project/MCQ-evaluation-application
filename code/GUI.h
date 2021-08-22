@@ -43,8 +43,8 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     addQuestionLabel, addQuestion, addOptionLabel, firstOption, secondOption, thirdOption,
     fourthOption, addQuestionToDatabase, correctAnswerLabel, correctAnswer, questionAddError,
     nextQuestion, answerNotChecked, logOutButton, backButton, emailInvalid, LoginUnsuccessfull,
-    name_label,name,totalAttempts_label,totalAttempts,inCorrectAnswer,inCorrectAnswerLabel,
-    scoreLabel,score,nextStudent;
+    name_label, name, totalAttempts_label, totalAttempts, inCorrectAnswer, inCorrectAnswerLabel,
+    scoreLabel, score, nextStudent;
 
 struct Register user;
 struct Question que;
@@ -244,8 +244,10 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             {
                 user.score++;
                 user.correct_answers++;
-                user.score+=10;
-            }else{
+                user.score += 10;
+            }
+            else
+            {
                 user.incorrect_answers++;
             }
             //below function stores the user data every time he submits the answer;
@@ -257,7 +259,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             break;
         case SIGN_OUT:;
             logout(user);
-            change_filename();
+            remove_filename();
             destroy_option();
             DestroyWindow(logOutButton);
             Login_page(hWnd);
@@ -288,9 +290,12 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
     case WM_CREATE:; //runs only when the window is created for the first time.
         int active = check_active(&user);
-        if (active == 0){
+        if (active == 0)
+        {
             Login_page(hWnd);
-        }else if(active == 1) {
+        }
+        else if (active == 1)
+        {
             options_page(hWnd);
         }
         break;
@@ -377,12 +382,12 @@ void options_page(HWND hWnd)
     logOutButton = CreateWindowW(L"Button", L"Sign Out", WS_VISIBLE | WS_CHILD, 400, 10, 90, 40, hWnd, (HMENU)SIGN_OUT, NULL, NULL);
     if (user.admin == 1)
     { // checks if the loged in user is admin
-        statusPageButton = CreateWindowW(L"button", L"View Student status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, (HMENU) VIEW_STATUS_ADMIN, NULL, NULL);
+        statusPageButton = CreateWindowW(L"button", L"View Student status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, (HMENU)VIEW_STATUS_ADMIN, NULL, NULL);
         questionAnswerButton = CreateWindowW(L"button", L"Add Questions", WS_VISIBLE | WS_CHILD, 150, 250, 200, 50, hWnd, (HMENU)ADD_QUESTION_PAGE, NULL, NULL); //pressing this buttion will open the add quesition page for admin
     }
     else if (user.admin == 0)
     { // checks if the loged in user is student
-        statusPageButton = CreateWindowW(L"button", L"Your status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, (HMENU) VIEW_STATUS_STUDENT, NULL, NULL);
+        statusPageButton = CreateWindowW(L"button", L"Your status", WS_VISIBLE | WS_CHILD, 150, 125, 200, 50, hWnd, (HMENU)VIEW_STATUS_STUDENT, NULL, NULL);
         questionAnswerButton = CreateWindowW(L"button", L"Practice Questions", WS_VISIBLE | WS_CHILD, 150, 250, 200, 50, hWnd, (HMENU)PRACTICE_QUESTION_BUTTON, NULL, NULL);
     }
 }
@@ -460,43 +465,45 @@ void clear_text()
     SetWindowTextW(correctAnswer, L"");
 }
 
-void display_status_page(HWND hWnd){
+void display_status_page(HWND hWnd)
+{
     backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
     wchar_t string[70];
-    name_label = CreateWindowW(L"static",L"Name:",WS_CHILD|WS_VISIBLE,100,100,200,25,hWnd,NULL,NULL,NULL); 
-    char data[70]="";
-    strcat(data,user.firstname);
-    strcat(data," ");
-    strcat(data,user.lastname);
-    mbstowcs(string,data,70);
-    name = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,100,200,25,hWnd,NULL,NULL,NULL);
-    userName_label = CreateWindowW(L"static",L"Username:",WS_CHILD|WS_VISIBLE,100,150,200,25,hWnd,NULL,NULL,NULL);
-    strcpy(data,user.username);
-    mbstowcs(string,data,70);
-    userName = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,150,200,25,hWnd,NULL,NULL,NULL);
-    eMail_label = CreateWindowW(L"static",L"Email:",WS_CHILD|WS_VISIBLE,100,200,200,25,hWnd,NULL,NULL,NULL);
-    strcpy(data,user.email);
-    mbstowcs(string,data,70);
-    eMail = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,200,200,25,hWnd,NULL,NULL,NULL);
-    totalAttempts_label = CreateWindowW(L"static",L"Total attempts:",WS_CHILD|WS_VISIBLE,100,250,200,25,hWnd,NULL,NULL,NULL);
-    itoa(user.total_answers,data,10);
-    mbstowcs(string,data,70);
-    totalAttempts = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,250,200,25,hWnd,NULL,NULL,NULL);
-    correctAnswerLabel= CreateWindowW(L"static",L"Correct answers:",WS_CHILD|WS_VISIBLE,100,300,200,25,hWnd,NULL,NULL,NULL);
-    itoa(user.correct_answers,data,10);
-    mbstowcs(string,data,70);
-    correctAnswer = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,300,200,25,hWnd,NULL,NULL,NULL);
-    inCorrectAnswerLabel= CreateWindowW(L"static",L"Incorrect answers:",WS_CHILD|WS_VISIBLE,100,350,200,25,hWnd,NULL,NULL,NULL);
-    itoa(user.incorrect_answers,data,10);
-    mbstowcs(string,data,70);
-    inCorrectAnswer = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,350,200,25,hWnd,NULL,NULL,NULL);
-    scoreLabel= CreateWindowW(L"static",L"Score:",WS_CHILD|WS_VISIBLE,100,400,200,25,hWnd,NULL,NULL,NULL);
-    itoa(user.score,data,10);
-    mbstowcs(string,data,70);
-    score = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,400,200,25,hWnd,NULL,NULL,NULL);
+    name_label = CreateWindowW(L"static", L"Name:", WS_CHILD | WS_VISIBLE, 100, 100, 200, 25, hWnd, NULL, NULL, NULL);
+    char data[70] = "";
+    strcat(data, user.firstname);
+    strcat(data, " ");
+    strcat(data, user.lastname);
+    mbstowcs(string, data, 70);
+    name = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 100, 200, 25, hWnd, NULL, NULL, NULL);
+    userName_label = CreateWindowW(L"static", L"Username:", WS_CHILD | WS_VISIBLE, 100, 150, 200, 25, hWnd, NULL, NULL, NULL);
+    strcpy(data, user.username);
+    mbstowcs(string, data, 70);
+    userName = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 150, 200, 25, hWnd, NULL, NULL, NULL);
+    eMail_label = CreateWindowW(L"static", L"Email:", WS_CHILD | WS_VISIBLE, 100, 200, 200, 25, hWnd, NULL, NULL, NULL);
+    strcpy(data, user.email);
+    mbstowcs(string, data, 70);
+    eMail = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 200, 200, 25, hWnd, NULL, NULL, NULL);
+    totalAttempts_label = CreateWindowW(L"static", L"Total attempts:", WS_CHILD | WS_VISIBLE, 100, 250, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(user.total_answers, data, 10);
+    mbstowcs(string, data, 70);
+    totalAttempts = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 250, 200, 25, hWnd, NULL, NULL, NULL);
+    correctAnswerLabel = CreateWindowW(L"static", L"Correct answers:", WS_CHILD | WS_VISIBLE, 100, 300, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(user.correct_answers, data, 10);
+    mbstowcs(string, data, 70);
+    correctAnswer = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 300, 200, 25, hWnd, NULL, NULL, NULL);
+    inCorrectAnswerLabel = CreateWindowW(L"static", L"Incorrect answers:", WS_CHILD | WS_VISIBLE, 100, 350, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(user.incorrect_answers, data, 10);
+    mbstowcs(string, data, 70);
+    inCorrectAnswer = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 350, 200, 25, hWnd, NULL, NULL, NULL);
+    scoreLabel = CreateWindowW(L"static", L"Score:", WS_CHILD | WS_VISIBLE, 100, 400, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(user.score, data, 10);
+    mbstowcs(string, data, 70);
+    score = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 400, 200, 25, hWnd, NULL, NULL, NULL);
 }
 
-void destroy_status_page(){
+void destroy_status_page()
+{
     DestroyWindow(backButton);
     DestroyWindow(name_label);
     DestroyWindow(name);
@@ -513,46 +520,46 @@ void destroy_status_page(){
     DestroyWindow(scoreLabel);
     DestroyWindow(score);
     DestroyWindow(nextStudent);
-
 }
 
-void display_status_page_admin(HWND hWnd){
+void display_status_page_admin(HWND hWnd)
+{
     struct Register student;
-    printf("\n\n%d\n\n",student_postion);
-    get_student_data(&student,&student_postion);
-    printf("\n\n%d\n\n",student_postion);
+    printf("\n\n%d\n\n", student_postion);
+    get_student_data(&student, &student_postion);
+    printf("\n\n%d\n\n", student_postion);
     backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
     wchar_t string[70];
-    name_label = CreateWindowW(L"static",L"Name:",WS_CHILD|WS_VISIBLE,100,50,200,25,hWnd,NULL,NULL,NULL); 
-    char data[70]="";
-    strcat(data,student.firstname);
-    strcat(data," ");
-    strcat(data,student.lastname);
-    mbstowcs(string,data,70);
-    name = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,50,200,25,hWnd,NULL,NULL,NULL);
-    userName_label = CreateWindowW(L"static",L"Username:",WS_CHILD|WS_VISIBLE,100,100,200,25,hWnd,NULL,NULL,NULL);
-    strcpy(data,student.username);
-    mbstowcs(string,data,70);
-    userName = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,100,200,25,hWnd,NULL,NULL,NULL);
-    eMail_label = CreateWindowW(L"static",L"Email:",WS_CHILD|WS_VISIBLE,100,150,200,25,hWnd,NULL,NULL,NULL);
-    strcpy(data,student.email);
-    mbstowcs(string,data,70);
-    eMail = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,150,200,25,hWnd,NULL,NULL,NULL);
-    totalAttempts_label = CreateWindowW(L"static",L"Total attempts:",WS_CHILD|WS_VISIBLE,100,200,200,25,hWnd,NULL,NULL,NULL);
-    itoa(student.total_answers,data,10);
-    mbstowcs(string,data,70);
-    totalAttempts = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,200,200,25,hWnd,NULL,NULL,NULL);
-    correctAnswerLabel= CreateWindowW(L"static",L"Correct answers:",WS_CHILD|WS_VISIBLE,100,250,200,25,hWnd,NULL,NULL,NULL);
-    itoa(student.correct_answers,data,10);
-    mbstowcs(string,data,70);
-    correctAnswer = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,250,200,25,hWnd,NULL,NULL,NULL);
-    inCorrectAnswerLabel= CreateWindowW(L"static",L"Incorrect answers:",WS_CHILD|WS_VISIBLE,100,300,200,25,hWnd,NULL,NULL,NULL);
-    itoa(student.incorrect_answers,data,10);
-    mbstowcs(string,data,70);
-    inCorrectAnswer = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,300,200,25,hWnd,NULL,NULL,NULL);
-    scoreLabel= CreateWindowW(L"static",L"Score:",WS_CHILD|WS_VISIBLE,100,350,200,25,hWnd,NULL,NULL,NULL);
-    itoa(student.score,data,10);
-    mbstowcs(string,data,70);
-    score = CreateWindowW(L"static",string,WS_CHILD|WS_VISIBLE,250,350,200,25,hWnd,NULL,NULL,NULL);
-    nextStudent = CreateWindowW(L"button",L"Next Question",WS_CHILD|WS_VISIBLE,175,400,150,50,hWnd,(HMENU) NEXT_STUDENT,NULL,NULL);
+    name_label = CreateWindowW(L"static", L"Name:", WS_CHILD | WS_VISIBLE, 100, 50, 200, 25, hWnd, NULL, NULL, NULL);
+    char data[70] = "";
+    strcat(data, student.firstname);
+    strcat(data, " ");
+    strcat(data, student.lastname);
+    mbstowcs(string, data, 70);
+    name = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 50, 200, 25, hWnd, NULL, NULL, NULL);
+    userName_label = CreateWindowW(L"static", L"Username:", WS_CHILD | WS_VISIBLE, 100, 100, 200, 25, hWnd, NULL, NULL, NULL);
+    strcpy(data, student.username);
+    mbstowcs(string, data, 70);
+    userName = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 100, 200, 25, hWnd, NULL, NULL, NULL);
+    eMail_label = CreateWindowW(L"static", L"Email:", WS_CHILD | WS_VISIBLE, 100, 150, 200, 25, hWnd, NULL, NULL, NULL);
+    strcpy(data, student.email);
+    mbstowcs(string, data, 70);
+    eMail = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 150, 200, 25, hWnd, NULL, NULL, NULL);
+    totalAttempts_label = CreateWindowW(L"static", L"Total attempts:", WS_CHILD | WS_VISIBLE, 100, 200, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(student.total_answers, data, 10);
+    mbstowcs(string, data, 70);
+    totalAttempts = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 200, 200, 25, hWnd, NULL, NULL, NULL);
+    correctAnswerLabel = CreateWindowW(L"static", L"Correct answers:", WS_CHILD | WS_VISIBLE, 100, 250, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(student.correct_answers, data, 10);
+    mbstowcs(string, data, 70);
+    correctAnswer = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 250, 200, 25, hWnd, NULL, NULL, NULL);
+    inCorrectAnswerLabel = CreateWindowW(L"static", L"Incorrect answers:", WS_CHILD | WS_VISIBLE, 100, 300, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(student.incorrect_answers, data, 10);
+    mbstowcs(string, data, 70);
+    inCorrectAnswer = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 300, 200, 25, hWnd, NULL, NULL, NULL);
+    scoreLabel = CreateWindowW(L"static", L"Score:", WS_CHILD | WS_VISIBLE, 100, 350, 200, 25, hWnd, NULL, NULL, NULL);
+    itoa(student.score, data, 10);
+    mbstowcs(string, data, 70);
+    score = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 350, 200, 25, hWnd, NULL, NULL, NULL);
+    nextStudent = CreateWindowW(L"button", L"Next Question", WS_CHILD | WS_VISIBLE, 175, 400, 150, 50, hWnd, (HMENU)NEXT_STUDENT, NULL, NULL);
 }

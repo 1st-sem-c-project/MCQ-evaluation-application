@@ -31,11 +31,6 @@ int registration(struct Register reg)
         fprintf(stderr, "\nError opend file\n");
         exit(1);
     }
-
-  
-   
-
-   
     // write struct to file
     fwrite(&reg, sizeof(reg), 1, user);
     // fputc('\n',user);
