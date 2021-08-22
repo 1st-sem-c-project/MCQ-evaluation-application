@@ -582,5 +582,5 @@ void display_status_page_admin(HWND hWnd)
     itoa(student.score, data, 10);
     mbstowcs(string, data, 70);
     score = CreateWindowW(L"static", string, WS_CHILD | WS_VISIBLE, 250, 350, 200, 25, hWnd, NULL, NULL, NULL);
-    nextStudent = CreateWindowW(L"button", L"Next Question", WS_CHILD | WS_VISIBLE, 175, 400, 150, 50, hWnd, (HMENU)NEXT_STUDENT, NULL, NULL);
+    nextStudent = CreateWindowW(L"button", L"Next Student", WS_CHILD | WS_VISIBLE, 175, 400, 150, 50, hWnd, (HMENU)NEXT_STUDENT, NULL, NULL);
 }
