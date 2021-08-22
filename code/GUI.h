@@ -5,6 +5,8 @@
 #include "login_backend.h"
 #include "logout.h"
 #include "change_data.h"
+#include "emailChecker.h"
+#include "passwordhashing.h"
 
 
 //macro to check the file messages
@@ -146,9 +148,9 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             // wchar_t un[30];
             // wchar_t pw[30];
             char uname[30];
-            char pword[30];
+            char pword[150];
             GetWindowText(userName, uname, 30);
-            GetWindowText(passWord, pword, 30);
+            GetWindowText(passWord, pword, 150);
             //uname is the username and pword is password
             // printf("%s\t%s", uname, pword);
             int emailValidation = emailValidate1(uname);
@@ -157,6 +159,9 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
+            char hello[150];
+            passwordEncoder(pword, hello);
+            strcpy(pword, hello);
             int loginCondition = login(uname, pword, &user);
             // //need to check  if the user name and password is correct or not;
             if (loginCondition == 1)
@@ -176,8 +181,10 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             Signup_page(hWnd);
             break;
 
-        case REGISTER_USER_BUTTON:; //this activates when the user presses the register button in signup page
+        case REGISTER_USER_BUTTON:; 
+        //this activates when the user presses the register button in signup page
             char confirm_password[30];
+            char hashedpassword[30];
             user.score = 0;
             user.correct_answers = 0;
             user.incorrect_answers = 0;
@@ -189,6 +196,10 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             GetWindowText(userName, user.username, 30);
             GetWindowText(passWord, user.password, 30);
             GetWindowText(confirmPassWord, confirm_password, 30);
+            if(strlen(user.password) < 8){
+                confirmPassIncorrect = CreateWindowW(L"static", L"Password should be greater than 8 characters", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                return 0;
+            }
             if (strcmp(user.password, "") == 0 || strcmp(confirm_password, "") == 0)
             {
                 confirmPassIncorrect = CreateWindowW(L"static", L"Please enter the password.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
@@ -206,9 +217,19 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
-
+            int notValid = emailChecker (user.email);
+                    // printf("%c", password3);
+            char hello1[150];
+            passwordEncoder(user.password, hello1);
+            strcpy(user.password,hello1);
             // now here the user information is stored in the database
-            registration(user);
+            if(notValid == 1){
+                registration(user);
+            }
+            else{
+                 emailInvalid = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                return -1;
+            }
 
             //new page for students shows up
             destroy_registration_page();

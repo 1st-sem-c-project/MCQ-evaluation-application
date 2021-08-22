@@ -19,7 +19,7 @@ int login(char *email, char *password, struct Register *user)
         fprintf(stderr, "\nError opening file\n");
         exit(1);
     }
-
+    printf("%c", password);
     // read file contents till end of file
     while (fread(&input, sizeof(struct Register), 1, login1))
     {
