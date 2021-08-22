@@ -44,6 +44,9 @@ int login(char *email, char *password, struct Register *user)
             if (fwrite != 0)
             {
                 printf("Contents to file written successfully !\n");
+                fclose(userlogin);
+                fclose(login1);
+                return 1;
             }
             else
             {
@@ -51,8 +54,6 @@ int login(char *email, char *password, struct Register *user)
             }
             printf("Login successfulll");
             fclose(userlogin);
-            fclose(login1);
-            return 1;
             break;
         }
 

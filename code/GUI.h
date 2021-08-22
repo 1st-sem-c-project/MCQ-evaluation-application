@@ -6,6 +6,8 @@
 #include "logout.h"
 #include "change_data.h"
 
+
+//macro to check the file messages
 #define LOGIN_ACTIVATE 1
 #define SIGNUP_ACTIVATE 2
 #define REGISTER_USER_BUTTON 3
@@ -20,6 +22,8 @@
 #define VIEW_STATUS_ADMIN 12
 #define NEXT_STUDENT 13
 
+
+//all the functions defined in the program
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 void Login_page(HWND);
 void Signup_page(HWND);
@@ -36,6 +40,8 @@ void display_status_page(HWND);
 void destroy_status_page();
 void display_status_page_admin(HWND);
 
+
+// defination for different window handeler in the program for creating different elements in the window
 HWND userName_label, userName, passWord_label, passWord, logiInButton,
     signUpButton, signUpTitle, firstName_label, firstName, lastName_label,
     lastName, eMail_label, eMail, confirmPassWord, confirmPassWord_label,
@@ -46,13 +52,45 @@ HWND userName_label, userName, passWord_label, passWord, logiInButton,
     name_label, name, totalAttempts_label, totalAttempts, inCorrectAnswer, inCorrectAnswerLabel,
     scoreLabel, score, nextStudent;
 
+//stores the information of the user in below structure
 struct Register user;
+//stores the question to show to the user or add question to the database
 struct Question que;
 int confirmpass = 1;
+//the position of the student in the database to select
 int student_postion = 1;
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow)
 {
+    /*******************************************************************************************
+     * Every Windows program includes an entry-point function that is named either WinMain or 
+     * wWinMain. Here is the signature for wWinMain.
+     * 
+     * 
+     * The four parameters are:
+     *  *   hInstance is something called a "handle to an instance" or "handle to a module." The 
+     *  *   *   operating system uses this value to identify the executable (EXE) when it is 
+     *  *   *   loaded in memory. The instance handle is needed for certain Windows functions—for 
+     *  *   *   example, to load icons or bitmaps.
+     *  *   hPrevInstance has no meaning. It was used in 16-bit Windows, but is now always zero.
+     *  *   pCmdLine contains the command-line arguments as a Unicode string.
+     *  *   nCmdShow is a flag that says whether the main application window will be minimized,
+     *  *   * maximized, or shown normally.
+     * 
+     * 
+     * WINAPI is the calling convention. A calling convention defines how a function receives  
+     * parameters from the caller. For example, it defines the order that parameters appear on 
+     * the stack.
+     * 
+     * 
+     * How does the compiler know to invoke wWinMain instead of the standard main function? What
+     *  actually happens is that the Microsoft C runtime library (CRT) provides an implementation \
+     * of main that calls either WinMain or wWinMain.
+    ********************************************************************************************/
+    
+    /*
+        Contains the window class attributes that are registered by the RegisterClass function.
+    */
     WNDCLASSW wc = {0};
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
@@ -70,9 +108,16 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow
     MSG msg = {0};
 
     //Message loop for running the window
+    //Retrieves a message from the calling thread's message queue. The function 
+    //dispatches incoming sent messages until a posted message is available for retrieval.
     while (GetMessage(&msg, NULL, NULL, NULL))
     {
+        //Translates virtual-key messages into character messages. The character
+        // messages are posted to the calling thread's message queue, to be read
+        // the next time the thread calls the GetMessage or PeekMessage function.
         TranslateMessage(&msg);
+        //Dispatches a message to a window procedure(WindowProcedure() in our case). It is typically used to 
+        //dispatch a message retrieved by the GetMessage function.
         DispatchMessage(&msg);
     }
     return 0;
@@ -80,12 +125,22 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE prevInst, LPSTR args, int ncmdshow
 
 LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 {
+    /********************************************************************************************
+     * Every window has an associated window procedure — a function that processes all messages 
+     * sent or posted to all windows of the class. All aspects of a window's appearance and behavior
+     *  depend on the window procedure's response to these messages. 
+    *********************************************************************************************/
     switch (msg)
     {
     case WM_COMMAND:
+        //WM_COMMAND is sent when the user selects a command item from a menu, when a control sends a notification
+        // message to its parent window, or when an accelerator keystroke is translated.
         switch (wp)
         {
         case LOGIN_ACTIVATE:; //runs when the login button is pressed by the user
+            /*DestroyWindow(HWND) function destroys the window or erases the element from the window
+            HWND is the window handeler
+            */
             DestroyWindow(emailInvalid);
             DestroyWindow(LoginUnsuccessfull);
             // wchar_t un[30];
@@ -114,7 +169,6 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 LoginUnsuccessfull = CreateWindowW(L"static", L"Please register to login", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
-
             break;
 
         case SIGNUP_ACTIVATE: //this activates when the user presses the sign up button on the login page
@@ -203,14 +257,14 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             clear_text();
             break;
 
-        case PRACTICE_QUESTION_BUTTON:;
+        case PRACTICE_QUESTION_BUTTON:;//this runs when user presses the practice quesiton button
             destroy_option();
             get_question(&que);
             //display the question here
             practice_question_page(hWnd, que);
 
             break;
-        case SUBMIT_ANSWER:;
+        case SUBMIT_ANSWER:;// this runs when user presses the next question button in the quesiton page
 
             char answer[50];
 
@@ -257,31 +311,31 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             destroy_questions();
             practice_question_page(hWnd, que);
             break;
-        case SIGN_OUT:;
+        case SIGN_OUT:;//this runs when user presses the signout button
             logout(user);
             remove_filename();
             destroy_option();
             DestroyWindow(logOutButton);
             Login_page(hWnd);
             break;
-        case BACK_TO_LOGIN:;
+        case BACK_TO_LOGIN:;// runs when user presses the back button when the user is in signup page
             destroy_registration_page();
             Login_page(hWnd);
             break;
-        case BACK_TO_OPTIONS:;
+        case BACK_TO_OPTIONS:;// runs when the user presses button 
             destroy_status_page();
             destroy_questions_page();
             options_page(hWnd);
             break;
-        case VIEW_STATUS_STUDENT:;
+        case VIEW_STATUS_STUDENT:;//runs when the user presses the view status button in option page
             destroy_option();
             display_status_page(hWnd);
             break;
-        case VIEW_STATUS_ADMIN:;
+        case VIEW_STATUS_ADMIN:;//runs when the admin presses the view the status button in option page
             destroy_option();
             display_status_page_admin(hWnd);
             break;
-        case NEXT_STUDENT:;
+        case NEXT_STUDENT:;//runs when the user presses the next student button in the view student status page
             destroy_status_page();
             display_status_page_admin(hWnd);
             break;
@@ -359,6 +413,7 @@ void Signup_page(HWND hWnd)
 
 void destroy_registration_page()
 {
+    //destroys all the elements of the registration page
     DestroyWindow(backButton);
     DestroyWindow(signUpTitle);
     DestroyWindow(firstName_label);
@@ -409,13 +464,9 @@ void add_question_page(HWND hWnd)
 
 void practice_question_page(HWND hWnd, struct Question que)
 {
+    //displays all the elements for the  practice quesion page 
     //retrieve the question here:
 
-    // strcpy(que.question,"What is your name?");
-    // strcpy(que.options[0],"Manish");
-    // strcpy(que.options[1],"AAYUSH");
-    // strcpy(que.options[2],"Pasang");
-    // strcpy(que.options[3],"Niraj");
     wchar_t quest[300];
     wchar_t option[4][50];
     mbstowcs(quest, que.question, 300);
@@ -434,6 +485,7 @@ void practice_question_page(HWND hWnd, struct Question que)
 
 void destroy_questions()
 {
+    //this destroys all the elements inside the question pages
     DestroyWindow(backButton);
     DestroyWindow(addQuestion);
     DestroyWindow(firstOption);
@@ -446,6 +498,7 @@ void destroy_questions()
 
 void destroy_questions_page()
 {
+    //destroys the element of the quesion page
     destroy_questions();
     DestroyWindow(addQuestionLabel);
     DestroyWindow(backButton);
@@ -457,6 +510,7 @@ void destroy_questions_page()
 
 void clear_text()
 {
+    //clears the text when the admin presses the add question to the data base in the add question page
     SetWindowTextW(addQuestion, L"");
     SetWindowTextW(firstOption, L"");
     SetWindowTextW(secondOption, L"");
@@ -467,6 +521,7 @@ void clear_text()
 
 void display_status_page(HWND hWnd)
 {
+    //displays the status of the student
     backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
     wchar_t string[70];
     name_label = CreateWindowW(L"static", L"Name:", WS_CHILD | WS_VISIBLE, 100, 100, 200, 25, hWnd, NULL, NULL, NULL);
@@ -504,6 +559,7 @@ void display_status_page(HWND hWnd)
 
 void destroy_status_page()
 {
+    //destroys all the elements in the status page
     DestroyWindow(backButton);
     DestroyWindow(name_label);
     DestroyWindow(name);
@@ -524,6 +580,7 @@ void destroy_status_page()
 
 void display_status_page_admin(HWND hWnd)
 {
+    // displays the status of all the students 
     struct Register student;
     printf("\n\n%d\n\n", student_postion);
     get_student_data(&student, &student_postion);
