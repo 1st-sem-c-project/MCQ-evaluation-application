@@ -156,7 +156,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             int emailValidation = emailValidate1(uname);
             if (emailValidation == 0)
             {
-                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 50, 425, 400, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
             char hello[150];
