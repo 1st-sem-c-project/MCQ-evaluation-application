@@ -1,11 +1,13 @@
 #include <stdio.h>
 
-void store_in_database(struct Register user){
+void store_in_database(struct Register user)// stores students data in data base
+{
     FILE *auser = fopen("resources/active_user.txt","w");
     fwrite(&user,sizeof(struct Register),1,auser);
     fclose(auser);
 }
-void get_student_data(struct Register *student,int *position){
+void get_student_data(struct Register *student,int *position)//read student data from the data base and stores it in structure
+{
     FILE *fptr = fopen("resources/question_user_number.txt","rb");
     int totalStudents;
     int totalQuestion;
@@ -22,7 +24,8 @@ void get_student_data(struct Register *student,int *position){
         *position = 1;
     }
 }
-void remove_filename(){
+void remove_filename() //changes the file names
+{
     char filename[100] ="resources/username_password.txt";
     int removed = remove(filename);
     printf("\n\n%d\n\n",removed);
