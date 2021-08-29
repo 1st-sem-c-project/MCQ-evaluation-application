@@ -437,6 +437,7 @@ void destroy_registration_page()
 {
     //destroys all the elements of the registration page
     DestroyWindow(backButton);
+    DestroyWindow(confirmPassIncorrect);
     DestroyWindow(signUpTitle);
     DestroyWindow(firstName_label);
     DestroyWindow(firstName);
