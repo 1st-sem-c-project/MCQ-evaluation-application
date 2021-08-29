@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include "emailValidation.h"
-struct Register
+struct Register// universal structure to store data of the user
 {
     char firstname[30];
     char lastname[30];
@@ -17,7 +17,7 @@ struct Register
     int admin;
 };
 
-int registration(struct Register reg)
+int registration(struct Register reg)// registers the user in the database
 {
 
     FILE *user;

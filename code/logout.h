@@ -2,7 +2,10 @@
 #include <string.h>
  
 int logout(struct Register user) {
-  
+    /*
+    log out the user from the system 
+    store the changed data into the database
+    */
     int question_number,user_number;
     FILE *active_user = fopen("resources/active_user.txt","ab");
     FILE *main_database = fopen("resources/username_password.txt","rb");

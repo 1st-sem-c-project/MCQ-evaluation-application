@@ -1,5 +1,5 @@
 #include<stdio.h>
-struct Question{
+struct Question{// universal structure to store question
     char question[300];
     char options[4][50];
     char correct[50];
