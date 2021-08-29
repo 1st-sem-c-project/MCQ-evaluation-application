@@ -55,7 +55,7 @@ int login(char *email, char *password, struct Register *user)// checks if the us
         }
     }
     printf("please register");
-    fclose(userlogin);
+    // fclose(userlogin);
     // close file
     fclose(login1);
 
