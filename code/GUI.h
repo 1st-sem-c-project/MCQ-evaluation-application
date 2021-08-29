@@ -388,7 +388,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 void Login_page(HWND hWnd)
 { // this pages creates all the elements for the login page
     userName_label = CreateWindowW(L"static", L"Email:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 75, 200, 25, hWnd, NULL, NULL, NULL);
-    userName = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP, 150, 100, 200, 25, hWnd, NULL, NULL, NULL);
+    userName = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP|ES_AUTOHSCROLL, 150, 100, 200, 25, hWnd, NULL, NULL, NULL);
     passWord_label = CreateWindowW(L"static", L"Password:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 175, 200, 25, hWnd, NULL, NULL, NULL);
     passWord = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD | WS_TABSTOP, 150, 200, 200, 25, hWnd, NULL, NULL, NULL);
     logiInButton = CreateWindowW(L"button", L"Log In", WS_VISIBLE | WS_CHILD, 200, 275, 100, 25, hWnd, (HMENU)LOGIN_ACTIVATE, NULL, NULL);
