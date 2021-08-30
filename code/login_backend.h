@@ -7,7 +7,7 @@
 
 // a struct to read and write
 
-int login(char *email, char *password, struct Register *user)
+int login(char *email, char *password, struct Register *user)// checks if the user is registerd in the database or not
 {
     FILE *login1;
     FILE *userlogin;
@@ -46,34 +46,25 @@ int login(char *email, char *password, struct Register *user)
             if (fwrite != 0)
             {
                 printf("Contents to file written successfully !\n");
-                fclose(userlogin);
-                fclose(login1);
-                return 1;
-            }
-            else
-            {
+            }else{
                 printf("Error writing file !\n");
             }
             printf("Login successfulll");
             fclose(userlogin);
+            fclose(login1);
+            return 1;
             break;
         }
-
-        else
-        {
-            printf("please register to login\n");
-            return 0;
-        }
     }
-    fclose(userlogin);
-
+    printf("please register");
+    // fclose(userlogin);
     // close file
     fclose(login1);
 
     return 0;
 }
 
-int check_active(struct Register *user)
+int check_active(struct Register *user)// checks if there is any active user in the system
 {
     FILE *fptr = fopen("resources/active_user.txt", "r");
     if (fptr == NULL)

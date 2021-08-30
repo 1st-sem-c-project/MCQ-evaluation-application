@@ -2,7 +2,7 @@
 #include<time.h>
 #include<stdlib.h>
 #include<stdio.h>
-void get_question(struct Question *question){
+void get_question(struct Question *question){// get the question in the structure in the structure availabe in the gui
     int total_question;
     FILE *fptr;
     int questionNumber ;

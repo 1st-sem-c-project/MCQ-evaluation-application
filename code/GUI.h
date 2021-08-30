@@ -156,7 +156,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             int emailValidation = emailValidate1(uname);
             if (emailValidation == 0)
             {
-                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 50, 425, 400, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
             char hello[150];
@@ -216,7 +216,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             int emailValidation1 = emailValidate1(user.email);
             if (emailValidation1 == 0)
             {
-                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                emailInvalid = CreateWindowW(L"static", L"Please add @gmail.com and @email.com at the end.", WS_VISIBLE | WS_CHILD, 50, 425, 450, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
             int notValid = emailChecker (user.email);
@@ -230,7 +230,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                 registration(user);
             }
             else{
-                 emailDouble = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD | SS_CENTER, 100, 425, 300, 25, hWnd, NULL, NULL, NULL);
+                emailInvalid = CreateWindowW(L"static", L"User with this email has already been registered", WS_VISIBLE | WS_CHILD , 50, 425, 450, 25, hWnd, NULL, NULL, NULL);
                 return -1;
             }
 
@@ -347,6 +347,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             Login_page(hWnd);
             break;
         case BACK_TO_OPTIONS:;// runs when the user presses button 
+            student_postion = 1;
             destroy_status_page();
             destroy_questions_page();
             options_page(hWnd);
@@ -389,7 +390,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 
 void Login_page(HWND hWnd)
 { // this pages creates all the elements for the login page
-    userName_label = CreateWindowW(L"static", L"Email:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 75, 200, 25, hWnd, NULL, NULL, NULL);
+    userName_label = CreateWindowW(L"static", L"Email:", WS_VISIBLE | WS_CHILD | SS_CENTER|ES_AUTOHSCROLL, 150, 75, 200, 25, hWnd, NULL, NULL, NULL);
     userName = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP, 150, 100, 200, 25, hWnd, NULL, NULL, NULL);
     passWord_label = CreateWindowW(L"static", L"Password:", WS_VISIBLE | WS_CHILD | SS_CENTER, 150, 175, 200, 25, hWnd, NULL, NULL, NULL);
     passWord = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD | WS_TABSTOP, 150, 200, 200, 25, hWnd, NULL, NULL, NULL);
@@ -439,6 +440,7 @@ void destroy_registration_page()
 {
     //destroys all the elements of the registration page
     DestroyWindow(backButton);
+    DestroyWindow(confirmPassIncorrect);
     DestroyWindow(signUpTitle);
     DestroyWindow(firstName_label);
     DestroyWindow(firstName);
@@ -607,9 +609,13 @@ void display_status_page_admin(HWND hWnd)
 {
     // displays the status of all the students 
     struct Register student;
-    printf("\n\n%d\n\n", student_postion);
     get_student_data(&student, &student_postion);
-    printf("\n\n%d\n\n", student_postion);
+    while(student.admin == 1){
+        printf("%d\n", student_postion);
+        get_student_data(&student, &student_postion);
+        printf("%d\n", student_postion);
+    }
+    
     backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
     wchar_t string[70];
     name_label = CreateWindowW(L"static", L"Name:", WS_CHILD | WS_VISIBLE, 100, 50, 200, 25, hWnd, NULL, NULL, NULL);

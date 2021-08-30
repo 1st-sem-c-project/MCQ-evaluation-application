@@ -2,11 +2,10 @@
 #include <string.h>
 #include <math.h>
 
-int passwordEncoder(char *password1, char *returnvalue){
+int passwordEncoder(char *password1, char *returnvalue){// this function hashes the password in simple manner
    
-    char word[100] = "7782jka9jd02qe93id29930402sdw34kdfnd2je3kkxfajkdkadk";
+    char word[100] = "7782jka9jd02qe93id29930402sdw34kdfnd2je3kkxfajkdkadk";// random keyword
     
-  
     char passwordhashed[1000] = "";
 
     int k =0, j =0, i=1;

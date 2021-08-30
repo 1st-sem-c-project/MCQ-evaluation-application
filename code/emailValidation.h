@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-int emailValidate1(char *email){
+int emailValidate1(char *email){// checks if the email format is correct or not
     char validate[10];
     char gmail[] = "@gmail.com";
     char email1[] = "@email.com";

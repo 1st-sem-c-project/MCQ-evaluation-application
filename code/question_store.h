@@ -1,11 +1,12 @@
 #include<stdio.h>
-struct Question{
+struct Question{// universal structure to store question
     char question[300];
     char options[4][50];
     char correct[50];
 };
 
-void store_to_the_database(struct Question question){
+void store_to_the_database(struct Question question)// store question to the data base
+{
     FILE *ptr,*numberptr,*tempfile;
     ptr=fopen("resources/question.txt", "ab");
     fwrite(&question, sizeof(question), 1, ptr);
