@@ -191,7 +191,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             user.correct_answers = 0;
             user.incorrect_answers = 0;
             user.total_answers = 0;
-            user.admin = 1;
+            user.admin = 0;
             GetWindowText(firstName, user.firstname, 30);
             GetWindowText(lastName, user.lastname, 30);
             GetWindowText(eMail, user.email, 50);
