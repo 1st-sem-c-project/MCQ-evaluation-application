@@ -191,7 +191,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             user.correct_answers = 0;
             user.incorrect_answers = 0;
             user.total_answers = 0;
-            user.admin = 0;
+            user.admin = 1;
             GetWindowText(firstName, user.firstname, 30);
             GetWindowText(lastName, user.lastname, 30);
             GetWindowText(eMail, user.email, 50);
@@ -276,7 +276,7 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
                     */
             store_to_the_database(que);
             //now structure is processed and saved in the data base
-            questionAddError = CreateWindowW(L"static", L"Question added sucessfully!!!", WS_VISIBLE | WS_CHILD | SS_CENTER, 25, 25, 400, 25, hWnd, NULL, NULL, NULL);
+            // questionAddError = CreateWindowW(L"static", L"Question added sucessfully!!!", WS_VISIBLE | WS_CHILD | SS_CENTER, 25, 25, 400, 25, hWnd, NULL, NULL, NULL);
             //clear the text in the gui
             clear_text();
             break;
@@ -502,7 +502,7 @@ void practice_question_page(HWND hWnd, struct Question que)
     mbstowcs(option[2], que.options[2], 50);
     mbstowcs(option[3], que.options[3], 50);
     backButton = CreateWindowW(L"button", L"Go Back", WS_VISIBLE | WS_CHILD | SS_CENTER, 10, 10, 90, 30, hWnd, (HMENU)BACK_TO_OPTIONS, NULL, NULL);
-    addQuestion = CreateWindowW(L"static", quest, WS_VISIBLE | WS_CHILD | SS_CENTER, 50, 100, 400, 25, hWnd, NULL, NULL, NULL);
+    addQuestion = CreateWindowW(L"static", quest, WS_VISIBLE | WS_CHILD | SS_CENTER, 50, 100, 400, 75, hWnd, NULL, NULL, NULL);
     firstOption = CreateWindowW(L"button", option[0], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 50, 150, 150, 25, hWnd, NULL, NULL, NULL);
     secondOption = CreateWindowW(L"button", option[1], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 250, 150, 150, 25, hWnd, NULL, NULL, NULL);
     thirdOption = CreateWindowW(L"button", option[2], WS_VISIBLE | WS_CHILD | SS_CENTER | BS_AUTORADIOBUTTON, 50, 200, 150, 25, hWnd, NULL, NULL, NULL);
