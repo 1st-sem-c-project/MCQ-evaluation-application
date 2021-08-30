@@ -2,3 +2,4 @@
 /code/*.exe
 test.c
 /resources/active_user.txt
+/.vscode

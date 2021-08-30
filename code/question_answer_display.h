@@ -12,7 +12,7 @@ void get_question(struct Question *question){// get the question in the structur
     fclose(numberFile);
     
     srand(time(&t));
-    questionNumber = rand()%total_question;
+    questionNumber = rand()%(total_question+1);
     
     fptr = fopen("resources/question.txt","rb");
     for (int i = 0; i < questionNumber; i++)
