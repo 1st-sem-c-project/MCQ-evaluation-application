@@ -1,0 +1,1 @@
+Distance moved by a uniformly accelerating body starting from rest in time 't' is propotional to :
