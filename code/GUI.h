@@ -245,6 +245,11 @@ LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
             break;
 
         case ADD_QUESTION_TO_DATABASE:; //this statements are executed after addQuestionToDatabase buttonis pressed
+            strcpy(que.question,"");
+            strcpy(que.options[0],"");
+            strcpy(que.options[1],"");
+            strcpy(que.options[2],"");
+            strcpy(que.options[3],"");
             GetWindowText(addQuestion, que.question, 300);
             GetWindowText(firstOption, que.options[0], 50);
             GetWindowText(secondOption, que.options[1], 50);

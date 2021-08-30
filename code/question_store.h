@@ -8,7 +8,7 @@ struct Question{// universal structure to store question
 void store_to_the_database(struct Question question)// store question to the data base
 {
     FILE *ptr,*numberptr,*tempfile;
-    ptr=fopen("resources/question.txt", "ab");
+    ptr=fopen("resources/question.txt", "a");
     fwrite(&question, sizeof(question), 1, ptr);
     fclose(ptr);
     numberptr = fopen("resources/question_user_number.txt","rb");
